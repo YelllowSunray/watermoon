@@ -19,6 +19,21 @@ import { getLookWithImage, looksForShop } from "@/lib/looks";
 import { brandToSlug, isGender, toCard, type Gender, type Product } from "@/lib/products";
 
 export const revalidate = 300;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const nav = await getGenderNavigation();
+  const params: Array<{ gender: string; slug: string }> = [];
+  for (const world of nav) {
+    for (const department of world.departments) {
+      params.push({ gender: world.gender, slug: department.slug });
+      for (const category of department.categories) {
+        params.push({ gender: world.gender, slug: category.slug });
+      }
+    }
+  }
+  return params;
+}
 
 const ROOM_FIELD: Record<string, Record<Gender, string>> = {
   clothing: { women: "field-vermillion", men: "field-ink" },

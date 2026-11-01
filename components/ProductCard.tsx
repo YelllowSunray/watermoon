@@ -10,10 +10,12 @@ export function ProductCard({
   product,
   index,
   dense = true,
+  priority = false,
 }: {
   product: Card;
   index?: string;
   dense?: boolean;
+  priority?: boolean;
 }) {
   const image = product.images[0];
   const sizes = dense
@@ -23,7 +25,7 @@ export function ProductCard({
   return (
     <article className="group">
       <div className="relative">
-        <Link href={`/product/${product.slug}`} className="block">
+        <Link href={`/product/${product.slug}`} prefetch={false} className="block">
           <div className="packshot">
             {image ? (
               <Image
@@ -31,6 +33,7 @@ export function ProductCard({
                 alt={`${product.brand} ${product.name}`}
                 fill
                 sizes={sizes}
+                priority={priority}
                 className="object-contain"
               />
             ) : null}
@@ -40,6 +43,7 @@ export function ProductCard({
                 alt=""
                 fill
                 sizes={sizes}
+                loading="lazy"
                 className="object-contain opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100"
               />
             ) : null}
@@ -62,7 +66,7 @@ export function ProductCard({
         />
         <QuickBuy product={product} className="absolute inset-x-3 bottom-3 z-10" />
       </div>
-      <Link href={`/product/${product.slug}`} className="block px-3 py-3 md:px-4">
+      <Link href={`/product/${product.slug}`} prefetch={false} className="block px-3 py-3 md:px-4">
         <p className="eyebrow">{index ? `${index} · ${product.brand}` : product.brand}</p>
         <h3 className="mt-1 text-[15px] leading-snug">{product.name}</h3>
         <p className="mt-1 text-[13px]">

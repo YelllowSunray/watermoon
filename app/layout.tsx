@@ -10,7 +10,7 @@ import { PageFrame } from "@/components/PageFrame";
 import { MetaPixel } from "@/components/pixel";
 import { SearchOverlay } from "@/components/SearchOverlay";
 import { StoreProvider } from "@/components/store";
-import { getGenderNavigation, getTopBrands, NAV_REVALIDATE_SECONDS } from "@/lib/catalog";
+import { getGenderNavigation, getTopBrands } from "@/lib/catalog";
 import { getMetaPixelId } from "@/lib/meta-pixel";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -18,15 +18,17 @@ import "./globals.css";
 const sans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const display = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "600"],
+  display: "swap",
 });
 
-export const revalidate = NAV_REVALIDATE_SECONDS;
+export const revalidate = 900;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -60,6 +62,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${sans.variable} ${display.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
+      </head>
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <StoreProvider>
           <Suspense fallback={null}>

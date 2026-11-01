@@ -40,31 +40,31 @@ export function Footer() {
           <p className="eyebrow mb-4">Help</p>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/contact">Contact</Link>
+              <Link href="/contact" prefetch={false}>Contact</Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about" prefetch={false}>About</Link>
             </li>
             <li>
-              <Link href="/faq">FAQ</Link>
+              <Link href="/faq" prefetch={false}>FAQ</Link>
             </li>
             <li>
-              <Link href="/sizes">Sizes</Link>
+              <Link href="/sizes" prefetch={false}>Sizes</Link>
             </li>
             <li>
-              <Link href="/shipping">Shipping</Link>
+              <Link href="/shipping" prefetch={false}>Shipping</Link>
             </li>
             <li>
-              <Link href="/returns">Returns</Link>
+              <Link href="/returns" prefetch={false}>Returns</Link>
             </li>
             <li>
-              <Link href="/account">Account</Link>
+              <Link href="/account" prefetch={false}>Account</Link>
             </li>
             <li>
-              <Link href="/privacy">Privacy</Link>
+              <Link href="/privacy" prefetch={false}>Privacy</Link>
             </li>
             <li>
-              <Link href="/terms">Terms</Link>
+              <Link href="/terms" prefetch={false}>Terms</Link>
             </li>
           </ul>
         </div>

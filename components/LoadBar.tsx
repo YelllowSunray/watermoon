@@ -20,7 +20,7 @@ export function LoadBar() {
     clear();
     pending.current = true;
     setVisible(true);
-    setWidth(18);
+    setWidth(28);
     timers.current.push(window.setTimeout(() => setWidth(62), 80));
     timers.current.push(window.setTimeout(() => setWidth(84), 240));
   }

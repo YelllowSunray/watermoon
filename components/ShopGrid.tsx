@@ -23,8 +23,8 @@ export function ShopGrid({
   return (
     <div>
       <CardGrid>
-        {shown.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {shown.map((product, index) => (
+          <ProductCard key={product.id} product={product} priority={index < 2} />
         ))}
       </CardGrid>
       {visible < listed.length ? (

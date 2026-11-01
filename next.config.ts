@@ -8,6 +8,7 @@ const shopifyStore =
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  poweredByHeader: false,
   images: {
     loader: "custom",
     loaderFile: "./lib/shopify-image-loader.ts",

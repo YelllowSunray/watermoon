@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { CATALOG_REVALIDATE_SECONDS, getProductsByHandles } from "@/lib/catalog";
+import { getProductsByHandles } from "@/lib/catalog";
 import { toCard } from "@/lib/products";
 
-export const revalidate = CATALOG_REVALIDATE_SECONDS;
+export const revalidate = 300;
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     { products: products.map(toCard) },
     {
       headers: {
-        "Cache-Control": `s-maxage=${CATALOG_REVALIDATE_SECONDS}, stale-while-revalidate=600`,
+        "Cache-Control": "s-maxage=300, stale-while-revalidate=600",
       },
     },
   );

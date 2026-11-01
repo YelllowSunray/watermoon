@@ -79,7 +79,7 @@ export function HelpStreet({ current }: { current: string }) {
                 {item.label}
               </span>
             ) : (
-              <Link href={item.href} className="display text-3xl md:text-5xl">
+              <Link href={item.href} prefetch={false} className="display text-3xl md:text-5xl">
                 {item.label}
               </Link>
             )}

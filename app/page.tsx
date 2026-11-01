@@ -97,7 +97,7 @@ export default async function HomePage() {
           <ul className="field-ink flex flex-wrap gap-x-8 gap-y-4 px-5 py-12 md:px-10">
             {street.map((brand) => (
               <li key={brand.slug}>
-                <Link href={`/brands/${brand.slug}`} className="display text-3xl md:text-5xl">
+                <Link href={`/brands/${brand.slug}`} prefetch={false} className="display text-3xl md:text-5xl">
                   {brand.name}
                 </Link>
               </li>

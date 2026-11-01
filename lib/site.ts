@@ -6,16 +6,24 @@ function read(name: string) {
   return process.env[name]?.trim() ?? "";
 }
 
+function isLocalHost(url: string) {
+  return /localhost|127\.0\.0\.1/i.test(url);
+}
+
 function resolveSiteUrl() {
   const explicit = read("NEXT_PUBLIC_SITE_URL").replace(/\/$/, "");
-  if (explicit) return explicit;
+  const vercelHost = (read("VERCEL_PROJECT_PRODUCTION_URL") || read("VERCEL_URL"))
+    .replace(/^https?:\/\//, "")
+    .replace(/\/$/, "");
+  const onVercel = read("VERCEL") === "1" || Boolean(vercelHost);
 
-  const vercel = read("VERCEL_PROJECT_PRODUCTION_URL") || read("VERCEL_URL");
-  if (vercel) {
-    return `https://${vercel.replace(/^https?:\/\//, "").replace(/\/$/, "")}`;
+  if (explicit && !(onVercel && isLocalHost(explicit))) {
+    return explicit;
   }
-
-  return "http://localhost:3000";
+  if (vercelHost) {
+    return `https://${vercelHost}`;
+  }
+  return explicit || "http://localhost:3000";
 }
 
 export const SITE_URL = resolveSiteUrl();

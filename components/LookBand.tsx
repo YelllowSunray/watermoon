@@ -59,6 +59,7 @@ export function LookBand({
                 <li key={piece.product.id}>
                   <Link
                     href={`/product/${piece.product.slug}`}
+                    prefetch={false}
                     className="block w-full text-left"
                     onMouseEnter={() => setActive(index)}
                     onFocus={() => setActive(index)}

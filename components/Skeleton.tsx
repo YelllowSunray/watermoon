@@ -23,14 +23,38 @@ export function GridSkeleton({ count = 8 }: { count?: number }) {
 export function PageSkeleton() {
   return (
     <div>
-      <div className="h-40 bg-ink md:h-52" />
-      <div className="px-5 py-14 md:px-10">
-        <div className="mb-8 flex gap-2">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className="h-12 w-24 shimmer" />
-          ))}
-        </div>
-        <GridSkeleton />
+      <div className="field-ink min-h-[28vh] px-5 py-16 md:px-10 md:min-h-[36vh]" />
+      <GridSkeleton />
+    </div>
+  );
+}
+
+export function WorldSkeleton() {
+  return (
+    <div>
+      <div className="grid md:grid-cols-2">
+        <div className="field-vermillion min-h-[42vh]" />
+        <div className="still shimmer min-h-[42vh]" />
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4">
+        <div className="field-cobalt min-h-[22vh]" />
+        <div className="field-ink min-h-[22vh]" />
+        <div className="field-violet min-h-[22vh]" />
+        <div className="field-orange min-h-[22vh]" />
+      </div>
+    </div>
+  );
+}
+
+export function HelpSkeleton({ splash = "field-ink" }: { splash?: string }) {
+  return (
+    <div>
+      <div className={`${splash} min-h-[32vh] px-5 py-16 md:min-h-[40vh] md:px-10`} />
+      <div className="grid md:grid-cols-2">
+        <div className="field-cobalt min-h-[28vh]" />
+        <div className="field-vermillion min-h-[28vh]" />
+        <div className="field-violet min-h-[28vh]" />
+        <div className="field-chartreuse min-h-[28vh]" />
       </div>
     </div>
   );
