@@ -2,7 +2,7 @@ import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 
 const base = "http://localhost:3000";
-mkdirSync("/tmp/watermoon-taste", { recursive: true });
+mkdirSync("/tmp/watertint-taste", { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 
@@ -39,7 +39,7 @@ try {
     throw new Error("Home gained catalog rails");
   }
   await assertNoSkyvanoCopy(desktop, "home");
-  await desktop.screenshot({ path: "/tmp/watermoon-taste/desktop-home.png", fullPage: false });
+  await desktop.screenshot({ path: "/tmp/watertint-taste/desktop-home.png", fullPage: false });
   note("desktop home: no Home/Back, two stories, caption under still");
 
   await desktop.locator('header a[href="/women"]').first().hover();
@@ -47,7 +47,7 @@ try {
     const box = node.closest("header")?.querySelector(".absolute");
     return box ? box.scrollHeight <= box.clientHeight + 2 : false;
   });
-  await desktop.screenshot({ path: "/tmp/watermoon-taste/desktop-menu.png", fullPage: false });
+  await desktop.screenshot({ path: "/tmp/watertint-taste/desktop-menu.png", fullPage: false });
   if (!panelH) note("desktop menu: panel present");
   await desktop.locator('header a[href="/women"]').first().click();
   await desktop.waitForURL("**/women");
@@ -63,7 +63,7 @@ try {
   const doors = await desktop.locator('main a[href^="/shop/women/"]').evaluateAll((nodes) =>
     nodes.filter((node) => node.querySelector("img") || node.className.includes("min-h")).length,
   );
-  await desktop.screenshot({ path: "/tmp/watermoon-taste/desktop-women.png", fullPage: false });
+  await desktop.screenshot({ path: "/tmp/watertint-taste/desktop-women.png", fullPage: false });
   note(`desktop women: manifesto + doors, no grid wall`);
 
   await desktop.goto(`${base}/stories`, { waitUntil: "domcontentloaded" });
@@ -71,20 +71,20 @@ try {
   const tiles = await desktop.locator('main a[href^="/stories/"]').count();
   if (tiles < 8) throw new Error(`Stories too thin ${tiles}`);
   if (tiles > 24) throw new Error(`Stories stamps ${tiles}`);
-  await desktop.screenshot({ path: "/tmp/watermoon-taste/desktop-stories.png", fullPage: false });
+  await desktop.screenshot({ path: "/tmp/watertint-taste/desktop-stories.png", fullPage: false });
   note(`desktop stories: ${tiles} tiles/links`);
 
   await desktop.goto(`${base}/shop/women/blazer`, { waitUntil: "domcontentloaded" });
   await desktop.waitForSelector("main article img");
   const cards = await desktop.locator("main article").count();
   if (cards > 12) throw new Error(`First shop viewport ${cards}`);
-  await desktop.screenshot({ path: "/tmp/watermoon-taste/desktop-shop.png", fullPage: false });
+  await desktop.screenshot({ path: "/tmp/watertint-taste/desktop-shop.png", fullPage: false });
   note(`desktop shop: ${cards} dense cards`);
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await mobile.goto(`${base}/`, { waitUntil: "domcontentloaded", timeout: 45000 });
   await mobile.waitForSelector("h1");
-  await mobile.screenshot({ path: "/tmp/watermoon-taste/mobile-home.png", fullPage: false });
+  await mobile.screenshot({ path: "/tmp/watertint-taste/mobile-home.png", fullPage: false });
   await mobile.locator("header button", { hasText: "Menu" }).click();
   const menu = (await mobile.locator(".menu-sheet a.display").allInnerTexts()).join("\n");
   if (/armani|desigual|pinko|guess|gucci/i.test(menu)) {
@@ -96,12 +96,12 @@ try {
   if (!/sizes/i.test(tools) || !/wishlist/i.test(tools) || !/account/i.test(tools)) {
     throw new Error("Mobile menu missing house links");
   }
-  await mobile.screenshot({ path: "/tmp/watermoon-taste/mobile-menu.png", fullPage: false });
+  await mobile.screenshot({ path: "/tmp/watertint-taste/mobile-menu.png", fullPage: false });
   note("mobile: short menu, no brand dump");
 
   await mobile.goto(`${base}/women`, { waitUntil: "domcontentloaded" });
   await mobile.waitForSelector("h1");
-  await mobile.screenshot({ path: "/tmp/watermoon-taste/mobile-women.png", fullPage: false });
+  await mobile.screenshot({ path: "/tmp/watertint-taste/mobile-women.png", fullPage: false });
   note("TASTE OK");
 } catch (error) {
   console.error("TASTE FAIL", error.message);

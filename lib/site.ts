@@ -28,7 +28,7 @@ function resolveSiteUrl() {
 
 export const SITE_URL = resolveSiteUrl();
 
-export const SITE_NAME = "Watermoon";
+export const SITE_NAME = "Watertint";
 
 /** Confirmed from this shop's Storefront CDN path and hosted accounts. */
 export const SHOPIFY_STORE_ID =
