@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { HelpFacts, HelpMast, HelpStreet } from "@/components/HelpStreet";
-import { COMPANY, SITE_NAME } from "@/lib/site";
+import { COMPANY, SHIPPING, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Shipping",
-  description: `${SITE_NAME} ships to the Netherlands. Rates show on the Shopify checkout.`,
+  description: `${SITE_NAME} ships worldwide. Economy ${SHIPPING.economyEurope} in Europe, ${SHIPPING.economyWorld} beyond. Rates show on checkout.`,
   alternates: { canonical: "/shipping" },
 };
 
@@ -13,28 +13,28 @@ export default function ShippingPage() {
     <div>
       <HelpMast
         eyebrow="Shipping"
-        title="The Netherlands."
-        line="Rates and methods are set in Shopify and shown on the hosted checkout, not invented here."
+        title="Worldwide."
+        line={`Dispatched within ${SHIPPING.dispatch}. ${SHIPPING.carriers}. The rate is the one Shopify shows at checkout.`}
         splash="cobalt"
       />
       <HelpFacts
         items={[
           {
             kicker: "01",
-            title: "This country.",
-            body: `${SITE_NAME} ships to the Netherlands.`,
+            title: "Most addresses.",
+            body: `${SITE_NAME} ships worldwide. A few destinations are restricted. Checkout will not offer a rate if we cannot send there.`,
             splash: "ink",
           },
           {
             kicker: "02",
-            title: "On checkout.",
-            body: "Checkout runs on the shop host. The rate you pay is the rate Shopify shows for that address.",
+            title: "How long.",
+            body: `Once the order is processed, the parcel leaves within ${SHIPPING.dispatch}. Economy takes ${SHIPPING.economyEurope} in Europe and ${SHIPPING.economyWorld} outside. Express takes ${SHIPPING.expressEurope} in Europe and ${SHIPPING.expressWorld} outside. Times are business days and can vary.`,
             splash: "orange",
           },
           {
             kicker: "03",
-            title: "If a line disappears.",
-            body: "The piece may sit at a location that does not fulfil web orders, or shipping is not offered for that address.",
+            title: "The courier.",
+            body: `${SHIPPING.carriers}. The method and price are set on the hosted checkout, not invented here.`,
             splash: "violet",
           },
           {

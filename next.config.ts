@@ -4,7 +4,7 @@ const shopifyStore =
   process.env.SHOPIFY_STORE_DOMAIN?.replace(/^https?:\/\//, "").replace(
     /\/$/,
     "",
-  ) || "syi12w-cq.myshopify.com";
+  ) || "ii0hwa-eh.myshopify.com";
 
 const nextConfig: NextConfig = {
   trailingSlash: false,

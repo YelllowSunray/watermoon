@@ -2,12 +2,12 @@ import Link from "next/link";
 import { HelpMast, HelpStreet } from "@/components/HelpStreet";
 import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/seo";
-import { COMPANY, RETURNS_DAYS, SITE_NAME } from "@/lib/site";
+import { COMPANY, RETURNS_DAYS, SHIP_CARRIERS, SHIPPING, SITE_NAME } from "@/lib/site";
 import { SPLASH_FIELD, type LookSplash } from "@/lib/looks-data";
 
 export const metadata = {
   title: "FAQ",
-  description: `Short answers from ${SITE_NAME}. Pay on Shopify. Ships to the Netherlands. Returns in ${RETURNS_DAYS} days.`,
+  description: `Short answers from ${SITE_NAME}. Pay on Shopify. Ships worldwide. Returns in ${RETURNS_DAYS} days.`,
   alternates: { canonical: "/faq" },
 };
 
@@ -27,14 +27,14 @@ const ITEMS: Array<{
   },
   {
     q: "Where do you ship?",
-    a: "We ship to the Netherlands. Rates and methods are set in Shopify and shown on the hosted checkout.",
+    a: `We ship worldwide, with ${SHIP_CARRIERS}. Dispatched within ${SHIPPING.dispatch}. Economy ${SHIPPING.economyEurope} in Europe, ${SHIPPING.economyWorld} beyond. The rate is the one checkout shows.`,
     href: "/shipping",
     more: "Shipping",
     splash: "ink",
   },
   {
     q: "Can I send it back?",
-    a: `Returns are accepted within ${RETURNS_DAYS} days of delivery, unused, with tags. Write first. Wait for a reply before you post anything.`,
+    a: `Returns are accepted within ${RETURNS_DAYS} days of delivery, unused, with tags. Write first. Send with ${SHIP_CARRIERS} and tracking — not regular post.`,
     href: "/returns",
     more: "Returns",
     splash: "vermillion",

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     default: SITE_NAME,
     template: `%s · ${SITE_NAME}`,
   },
-  description: "Looks, cloth, leather. Edited in Hilversum. Ships to the Netherlands.",
+  description: "Looks, cloth, leather. Edited in Hilversum. Ships worldwide.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

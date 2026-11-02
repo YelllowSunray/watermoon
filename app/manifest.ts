@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: SITE_NAME,
     short_name: SITE_NAME,
-    description: "Looks, cloth, leather. Edited in Hilversum.",
+    description: "Looks, cloth, leather. Edited in Hilversum. Ships worldwide.",
     start_url: "/",
     display: "browser",
     background_color: "#0a0a0a",

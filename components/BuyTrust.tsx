@@ -5,7 +5,7 @@ export function BuyTrust({ className = "" }: { className?: string }) {
   return (
     <ul className={`flex flex-wrap gap-x-5 gap-y-2 text-xs tracking-[0.08em] uppercase ${className}`}>
       <li>
-        <Link href="/shipping">Ships to the Netherlands</Link>
+        <Link href="/shipping">Ships worldwide</Link>
       </li>
       <li>
         <Link href="/returns">{RETURNS_DAYS}-day returns</Link>

@@ -30,15 +30,17 @@ export const SITE_URL = resolveSiteUrl();
 
 export const SITE_NAME = "Watertint";
 
-/** Confirmed from this shop's Storefront CDN path and hosted accounts. */
+/** Numeric shop GID. From a CDN path `s/files/1/a/b/c` → abc, or Admin `shop { id }`. */
 export const SHOPIFY_STORE_ID =
-  read("SHOPIFY_STORE_ID") || read("NEXT_PUBLIC_SHOPIFY_STORE_ID") || "108213731669";
+  read("SHOPIFY_STORE_ID") || read("NEXT_PUBLIC_SHOPIFY_STORE_ID");
 
 export const SHOPIFY_STORE_DOMAIN =
   read("SHOPIFY_STORE_DOMAIN").replace(/^https?:\/\//, "").replace(/\/$/, "") ||
-  "syi12w-cq.myshopify.com";
+  "ii0hwa-eh.myshopify.com";
 
-export const SHOPIFY_ACCOUNT_URL = `https://shopify.com/${SHOPIFY_STORE_ID}/account`;
+export const SHOPIFY_ACCOUNT_URL = SHOPIFY_STORE_ID
+  ? `https://shopify.com/${SHOPIFY_STORE_ID}/account`
+  : `https://${SHOPIFY_STORE_DOMAIN}/account`;
 
 /** Live catalog prices are EUR. */
 export const CURRENCY = "EUR";
@@ -58,13 +60,27 @@ export const COMPANY = {
   addressCountryName: "The Netherlands",
   kvk: "99510723",
   vatId: "NL005390534B11",
-  email: "samir@samirdev.com",
-  phone: "+31687343078",
-  phoneDisplay: "+31 687343078",
+  email: "info@watertint.com",
+  phone: "+31626657125",
+  phoneDisplay: "+31 6 26657125",
 } as const;
 
-/** Dutch distance-selling withdrawal period. */
+/** Matches the fulfilment 14-day window, counted from delivery. */
 export const RETURNS_DAYS = 14;
+
+/** Tracked couriers only — regular post is refused. */
+export const SHIP_CARRIERS = "UPS, FedEx, or DHL";
+
+export const SHIPPING = {
+  dispatch: "24–48 hours",
+  economyEurope: "3–5 business days",
+  economyWorld: "5–8 business days",
+  expressEurope: "1–3 business days",
+  expressWorld: "3–4 business days",
+  carriers: SHIP_CARRIERS,
+} as const;
+
+export const SHIPS_LINE = `Ships worldwide. Returns within ${RETURNS_DAYS} days.`;
 
 export const CONTACT_TO = read("CONTACT_TO") || COMPANY.email;
 

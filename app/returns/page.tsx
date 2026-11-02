@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { HelpFacts, HelpMast, HelpStreet } from "@/components/HelpStreet";
-import { COMPANY, RETURNS_DAYS, SITE_NAME } from "@/lib/site";
+import { COMPANY, RETURNS_DAYS, SHIP_CARRIERS, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Returns",
-  description: `${SITE_NAME} accepts returns within ${RETURNS_DAYS} days of delivery, unused, with tags.`,
+  description: `${SITE_NAME} accepts returns within ${RETURNS_DAYS} days of delivery, unused, with tags. ${SHIP_CARRIERS}, with tracking.`,
   alternates: { canonical: "/returns" },
 };
 
@@ -14,7 +14,7 @@ export default function ReturnsPage() {
       <HelpMast
         eyebrow="Returns"
         title={`${RETURNS_DAYS} days.`}
-        line={`Dutch distance-selling law. ${SITE_NAME} accepts the piece unused, with tags.`}
+        line={`Counted from delivery. Unused, with tags. Write first. Send with ${SHIP_CARRIERS} and a tracking number.`}
         splash="vermillion"
       />
       <HelpFacts
@@ -22,13 +22,13 @@ export default function ReturnsPage() {
           {
             kicker: "01",
             title: "After delivery.",
-            body: `You have ${RETURNS_DAYS} days after delivery to withdraw.`,
+            body: `Ask within ${RETURNS_DAYS} days of delivery. The parcel must also leave you within those ${RETURNS_DAYS} days. One piece, several, or the whole order.`,
             splash: "ink",
           },
           {
             kicker: "02",
             title: "Unused. With tags.",
-            body: `${SITE_NAME} accepts returns unused, with tags.`,
+            body: "Worn or used pieces are not refunded. They come back to you. Give a reason when you write.",
             splash: "cobalt",
           },
           {
@@ -36,7 +36,7 @@ export default function ReturnsPage() {
             title: "Write first.",
             body: (
               <>
-                Write {COMPANY.email} with the order number. Wait for a reply before you send anything back.
+                Write {COMPANY.email} with the order number. Wait for a reply and a return address before you send anything. We inspect the piece, then refund.
                 <Link href="/contact" className="cta-ghost mt-8 inline-flex">
                   Contact
                 </Link>
@@ -46,8 +46,8 @@ export default function ReturnsPage() {
           },
           {
             kicker: "04",
-            title: "The seat.",
-            body: `${COMPANY.legalName}, ${COMPANY.streetAddress}, ${COMPANY.postalCode} ${COMPANY.addressLocality}.`,
+            title: "The courier.",
+            body: `${SHIP_CARRIERS}, tracked. Regular post is refused. Send to the address we give you for that order — the wrong depot delays the refund.`,
             splash: "violet",
           },
         ]}

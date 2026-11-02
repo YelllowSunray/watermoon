@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { HelpFacts, HelpMast, HelpStreet } from "@/components/HelpStreet";
-import { COMPANY, RETURNS_DAYS, SITE_NAME } from "@/lib/site";
+import { COMPANY, RETURNS_DAYS, SHIP_CARRIERS, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Terms",
-  description: `${SITE_NAME} is operated by ${COMPANY.legalName}. Ships to the Netherlands. Returns in ${RETURNS_DAYS} days.`,
+  description: `${SITE_NAME} is operated by ${COMPANY.legalName}. Ships worldwide. Returns in ${RETURNS_DAYS} days.`,
   alternates: { canonical: "/terms" },
 };
 
@@ -14,7 +14,7 @@ export default function TermsPage() {
       <HelpMast
         eyebrow="Terms"
         title="The short version."
-        line={`${COMPANY.legalName} operates ${SITE_NAME}. Goods ship to the Netherlands.`}
+        line={`${COMPANY.legalName} operates ${SITE_NAME}. Goods ship worldwide.`}
         splash="ink"
       />
       <HelpFacts
@@ -30,7 +30,7 @@ export default function TermsPage() {
             title: "Ship and return.",
             body: (
               <>
-                Goods ship to the Netherlands. Returns are accepted within {RETURNS_DAYS} days of delivery, unused, with tags.
+                Goods ship worldwide. Returns are accepted within {RETURNS_DAYS} days of delivery, unused, with tags. Send with {SHIP_CARRIERS} and a tracking number.
                 <span className="mt-6 flex flex-wrap gap-3">
                   <Link href="/shipping" className="cta-ghost">
                     Shipping

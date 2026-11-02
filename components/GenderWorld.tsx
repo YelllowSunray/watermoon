@@ -5,7 +5,7 @@ import { ShopGrid } from "@/components/ShopGrid";
 import type { NavDepartment } from "@/lib/catalog-types";
 import { SPLASH_FIELD, type LookDefinition, type LookSplash } from "@/lib/looks-data";
 import { toCard, type Gender, type Product } from "@/lib/products";
-import { RETURNS_DAYS } from "@/lib/site";
+import { SHIPS_LINE } from "@/lib/site";
 import type { StoryPreview } from "@/lib/stories-data";
 
 export type GenderLook = {
@@ -99,7 +99,7 @@ export function GenderWorld({
             ) : null}
           </div>
           <p className="mt-5 max-w-sm text-sm leading-6">
-            Ships to the Netherlands. Returns within {RETURNS_DAYS} days.
+            {SHIPS_LINE}
           </p>
         </section>
       )}

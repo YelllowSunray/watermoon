@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { PaymentMarks } from "@/components/PaymentMarks";
-import { COMPANY, RETURNS_DAYS, SITE_NAME } from "@/lib/site";
+import { COMPANY, SHIPS_LINE, SITE_NAME } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -10,7 +10,7 @@ export function Footer() {
         <div>
           <p className="display text-3xl">{SITE_NAME}</p>
           <p className="mt-4 max-w-xs text-sm leading-6 text-dust">
-            Ships to the Netherlands. Returns within {RETURNS_DAYS} days.
+            {SHIPS_LINE}
           </p>
         </div>
         <div>
