@@ -1,4 +1,4 @@
-import { COMPANY, CURRENCY, SITE_NAME, SITE_URL } from "@/lib/site";
+import { COMPANY, CURRENCY, SITE_NAME, SITE_URL, SOCIAL } from "@/lib/site";
 import type { Product } from "@/lib/products";
 
 export function absoluteUrl(path = "/") {
@@ -20,6 +20,7 @@ export function organizationJsonLd() {
     email: COMPANY.email,
     telephone: COMPANY.phone,
     vatID: COMPANY.vatId,
+    sameAs: SOCIAL.map((item) => item.href),
     address: {
       "@type": "PostalAddress",
       streetAddress: COMPANY.streetAddress,

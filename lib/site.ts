@@ -82,6 +82,15 @@ export const SHIPPING = {
 
 export const SHIPS_LINE = `Ships worldwide. Returns within ${RETURNS_DAYS} days.`;
 
+export const SOCIAL = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61595899002363",
+  },
+  { label: "TikTok", href: "https://www.tiktok.com/@watertint22" },
+  { label: "YouTube", href: "https://www.youtube.com/@shopwatertint" },
+] as const;
+
 export const CONTACT_TO = read("CONTACT_TO") || COMPANY.email;
 
 export const RESEND_FROM =

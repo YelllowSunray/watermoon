@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { PaymentMarks } from "@/components/PaymentMarks";
-import { COMPANY, SHIPS_LINE, SITE_NAME } from "@/lib/site";
+import { COMPANY, SHIPS_LINE, SITE_NAME, SOCIAL } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -12,6 +12,15 @@ export function Footer() {
           <p className="mt-4 max-w-xs text-sm leading-6 text-dust">
             {SHIPS_LINE}
           </p>
+          <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {SOCIAL.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} target="_blank" rel="me noopener noreferrer">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         <div>
           <p className="eyebrow mb-4">Shop</p>

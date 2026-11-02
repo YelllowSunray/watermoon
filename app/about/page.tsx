@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HelpFacts, HelpMast, HelpStreet } from "@/components/HelpStreet";
-import { COMPANY, SITE_NAME, companyAddressLines } from "@/lib/site";
+import { COMPANY, SITE_NAME, SOCIAL, companyAddressLines } from "@/lib/site";
 
 export const metadata = {
   title: "About",
@@ -54,6 +54,18 @@ export default function AboutPage() {
                 <a href={`tel:${COMPANY.phone}`} className="mt-2 block">
                   {COMPANY.phoneDisplay}
                 </a>
+                <span className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+                  {SOCIAL.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      target="_blank"
+                      rel="me noopener noreferrer"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </span>
                 <Link href="/contact" className="cta-ghost mt-8 inline-flex">
                   Contact
                 </Link>

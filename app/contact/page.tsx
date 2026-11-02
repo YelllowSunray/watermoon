@@ -1,6 +1,6 @@
 import { ContactForm } from "@/components/ContactForm";
 import { HelpMast, HelpStreet } from "@/components/HelpStreet";
-import { COMPANY, companyAddressLines, SITE_NAME } from "@/lib/site";
+import { COMPANY, SOCIAL, companyAddressLines, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Contact",
@@ -37,6 +37,18 @@ export default function ContactPage() {
             </a>
             <p className="mt-10 max-w-sm text-sm leading-6">
               {SITE_NAME} is the shop. {COMPANY.legalName} is the company.
+            </p>
+            <p className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+              {SOCIAL.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="me noopener noreferrer"
+                >
+                  {item.label}
+                </a>
+              ))}
             </p>
           </div>
           <address className="mt-16 text-sm leading-6 not-italic">
