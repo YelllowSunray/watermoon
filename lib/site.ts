@@ -83,6 +83,7 @@ export const SHIPPING = {
 export const SHIPS_LINE = `Ships worldwide. Returns within ${RETURNS_DAYS} days.`;
 
 export const SOCIAL = [
+  { label: "Instagram", href: "https://www.instagram.com/storewatertint/" },
   {
     label: "Facebook",
     href: "https://www.facebook.com/profile.php?id=61595899002363",
