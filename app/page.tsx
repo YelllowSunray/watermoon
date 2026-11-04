@@ -68,9 +68,6 @@ export default async function HomePage() {
       ) : null}
 
       <section>
-        <div className="px-5 py-10 md:px-10">
-          <p className="eyebrow">The edit</p>
-        </div>
         <StoryTiles stories={stories} large />
       </section>
 
