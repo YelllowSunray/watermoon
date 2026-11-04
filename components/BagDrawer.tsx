@@ -44,7 +44,12 @@ export function BagDrawer() {
         setError(json.error || "Could not start checkout.");
         return;
       }
-      track("InitiateCheckout", { value: total, currency: CURRENCY, num_items: bag.length });
+      track("InitiateCheckout", {
+        content_ids: bag.map((line) => line.handle),
+        value: total,
+        currency: CURRENCY,
+        num_items: bag.length,
+      });
       window.location.href = json.checkoutUrl;
     } catch {
       setError("Could not start checkout.");
