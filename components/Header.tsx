@@ -714,13 +714,16 @@ function MobileFold({
 }) {
   return (
     <div className="border-b border-line">
-      <div className={`${open ? splash : "bg-paper"} flex items-center justify-between gap-3 px-5`}>
-        <Link href={href} className="display flex min-h-[4.5rem] min-w-0 items-center text-[2.5rem]">
+      <div className={`${open ? splash : "bg-paper"} flex items-stretch`}>
+        <Link
+          href={href}
+          className="display flex min-h-[4.5rem] shrink-0 items-center pl-5 text-[2.5rem]"
+        >
           {label}
         </Link>
         <button
           type="button"
-          className="flex h-12 w-12 shrink-0 items-center justify-center"
+          className="flex min-h-[4.5rem] min-w-12 flex-1 items-center justify-end pr-5 pl-3"
           onClick={onToggle}
           aria-expanded={open}
           aria-label={open ? `Close ${label}` : `Open ${label}`}
