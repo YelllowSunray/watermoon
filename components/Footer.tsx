@@ -22,60 +22,62 @@ export function Footer() {
             ))}
           </ul>
         </div>
-        <div>
-          <p className="eyebrow mb-4">Shop</p>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/women">Women</Link>
-            </li>
-            <li>
-              <Link href="/men">Men</Link>
-            </li>
-            <li>
-              <Link href="/looks">Looks</Link>
-            </li>
-            <li>
-              <Link href="/stories">The edit</Link>
-            </li>
-            <li>
-              <Link href="/sale">Sale</Link>
-            </li>
-            <li>
-              <Link href="/brands">Brands</Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="eyebrow mb-4">Help</p>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/contact" prefetch={false}>Contact</Link>
-            </li>
-            <li>
-              <Link href="/about" prefetch={false}>About</Link>
-            </li>
-            <li>
-              <Link href="/faq" prefetch={false}>FAQ</Link>
-            </li>
-            <li>
-              <Link href="/sizes" prefetch={false}>Sizes</Link>
-            </li>
-            <li>
-              <Link href="/shipping" prefetch={false}>Shipping</Link>
-            </li>
-            <li>
-              <Link href="/returns" prefetch={false}>Returns</Link>
-            </li>
-            <li>
-              <Link href="/account" prefetch={false}>Account</Link>
-            </li>
-            <li>
-              <Link href="/privacy" prefetch={false}>Privacy</Link>
-            </li>
-            <li>
-              <Link href="/terms" prefetch={false}>Terms</Link>
-            </li>
-          </ul>
+        <div className="grid grid-cols-2 gap-8 md:contents">
+          <div>
+            <p className="eyebrow mb-4">Shop</p>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/women">Women</Link>
+              </li>
+              <li>
+                <Link href="/men">Men</Link>
+              </li>
+              <li>
+                <Link href="/looks">Looks</Link>
+              </li>
+              <li>
+                <Link href="/stories">The edit</Link>
+              </li>
+              <li>
+                <Link href="/sale">Sale</Link>
+              </li>
+              <li>
+                <Link href="/brands">Brands</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p className="eyebrow mb-4">Help</p>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/contact" prefetch={false}>Contact</Link>
+              </li>
+              <li>
+                <Link href="/about" prefetch={false}>About</Link>
+              </li>
+              <li>
+                <Link href="/faq" prefetch={false}>FAQ</Link>
+              </li>
+              <li>
+                <Link href="/sizes" prefetch={false}>Sizes</Link>
+              </li>
+              <li>
+                <Link href="/shipping" prefetch={false}>Shipping</Link>
+              </li>
+              <li>
+                <Link href="/returns" prefetch={false}>Returns</Link>
+              </li>
+              <li>
+                <Link href="/account" prefetch={false}>Account</Link>
+              </li>
+              <li>
+                <Link href="/privacy" prefetch={false}>Privacy</Link>
+              </li>
+              <li>
+                <Link href="/terms" prefetch={false}>Terms</Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div>
           <p className="eyebrow mb-4">Notes</p>

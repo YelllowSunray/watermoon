@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { CardGrid } from "@/components/CardGrid";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { ProductCard } from "@/components/ProductCard";
-import { SizePrefs } from "@/components/SizePrefs";
 import { useStore } from "@/components/store";
 import type { ProductCard as Card } from "@/lib/products";
 
@@ -29,25 +28,17 @@ export function WishlistView() {
     return (
       <div className="px-5 py-14 md:px-10">
         <p className="mb-4 text-sm">Nothing saved. Hearts live on the cards.</p>
-        <p className="mb-16">
+        <p>
           <Link href="/looks" className="cta inline-flex">
             Shop the look
           </Link>
         </p>
-        <div className="max-w-2xl">
-          <SizePrefs />
-        </div>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="px-5 py-10 md:px-10">
-        <div className="max-w-2xl">
-          <SizePrefs />
-        </div>
-      </div>
       <CardGrid>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />

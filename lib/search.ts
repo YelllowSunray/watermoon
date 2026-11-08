@@ -168,7 +168,7 @@ export function intentToShopifyQuery(intent: SearchIntent) {
   const parts: string[] = [];
   if (intent.gender) {
     parts.push(
-      `(tag:'Gender_${intent.gender}' OR tag:'Gender_${intent.gender === "women" ? "Women" : "Men"}')`,
+      `(tag:'Gender_${intent.gender}' OR tag:'Gender_${intent.gender === "women" ? "Women" : "Men"}' OR tag:'${intent.gender === "women" ? "Women" : "Men"}')`,
     );
   }
   if (intent.subcategory) {

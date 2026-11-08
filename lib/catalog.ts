@@ -10,6 +10,7 @@ import {
 } from "@/lib/products";
 import { isShopifyReady, shopifyMissingKeys } from "@/lib/shopify/config";
 import {
+  genderQueryTags,
   mapShopifyProduct,
   resolveDepartment,
   resolveGender,
@@ -103,7 +104,7 @@ export function sanitizeSearch(query: string) {
 }
 
 export function genderClause(gender: Gender) {
-  return `(${tagTerm(`Gender_${gender}`)} OR ${tagTerm(`Gender_${gender === "women" ? "Women" : "Men"}`)})`;
+  return `(${genderQueryTags(gender).map(tagTerm).join(" OR ")})`;
 }
 
 function mapRenderable(nodes: ShopifyProductNode[]) {
@@ -215,12 +216,25 @@ export async function getScopedShop({
   const parts = [genderClause(gender)];
   if (department) {
     const label = DEPARTMENT_LABEL[department];
-    parts.push(`(${tagTerm(`Category_${label}`)} OR ${tagTerm(`Category_${department}`)})`);
+    const rooms = [
+      tagTerm(`Category_${label}`),
+      tagTerm(`Category_${department}`),
+      tagTerm(label),
+    ];
+    if (department === "accessories") rooms.push(tagTerm("Bags"));
+    parts.push(`(${rooms.join(" OR ")})`);
   }
   if (subcategory) {
-    parts.push(
-      `(${tagTerm(`Subcategory_${subcategory}`)} OR ${tagTerm(`Subcategory_${subcategory.replace(/-/g, " ")}`)})`,
-    );
+    const name = subcategory.replace(/-/g, " ").trim();
+    const kinds = [
+      tagTerm(`Subcategory_${subcategory}`),
+      tagTerm(`Subcategory_${name}`),
+      tagTerm(`${name} - Clothing`),
+      tagTerm(`${name} - Shoes`),
+      tagTerm(`${name} - Accessories`),
+      tagTerm(`${name} - Bags`),
+    ];
+    parts.push(`(${kinds.join(" OR ")})`);
   }
 
   const products = await queryProducts(parts.join(" AND "), {
@@ -244,7 +258,7 @@ export async function getScopedShop({
 
 export async function getSaleProducts(limit = 24) {
   return (
-    await queryProducts("compare_at_price:>0", { maxPages: 1, first: 50 })
+    await queryProducts("compare_at_price:>0", { maxPages: 2, first: 50 })
   )
     .filter((product) => product.compareAtPrice)
     .slice(0, limit);
@@ -579,4 +593,18 @@ export function resolveShopSlug(slug: string): {
 } {
   if (isDepartment(slug)) return { department: slug };
   return { subcategory: slug };
+}
+
+export function departmentForShopSlug(world: GenderNav | undefined, slug: string) {
+  if (isDepartment(slug)) return slug;
+  const matches =
+    world?.departments.filter((department) =>
+      department.categories.some((category) => category.slug === slug),
+    ) ?? [];
+  if (matches.length <= 1) return matches[0]?.slug;
+  return [...matches].sort((left, right) => {
+    const a = left.categories.find((category) => category.slug === slug)?.count ?? 0;
+    const b = right.categories.find((category) => category.slug === slug)?.count ?? 0;
+    return b - a;
+  })[0]?.slug;
 }

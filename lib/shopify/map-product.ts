@@ -165,31 +165,80 @@ function toDisplayColor(name: string) {
 }
 
 function tagValue(tags: string[], prefix: string) {
-  const match = tags.find((tag) => tag.startsWith(`${prefix}_`));
+  const needle = `${prefix}_`.toLowerCase();
+  const match = tags.find((tag) => tag.toLowerCase().startsWith(needle));
   return match ? match.slice(prefix.length + 1) : undefined;
 }
 
+function hasTag(tags: string[], value: string) {
+  const needle = value.toLowerCase();
+  return tags.some((tag) => tag.trim().toLowerCase() === needle);
+}
+
+const ROOM_BY_SUFFIX: Record<string, Department> = {
+  clothing: "clothing",
+  shoes: "shoes",
+  accessories: "accessories",
+  bags: "accessories",
+};
+
+function crumbParts(tag: string) {
+  return tag.split(" - ").map((part) => part.trim()).filter(Boolean);
+}
+
+function departmentFromCrumbs(tags: string[]): Department | undefined {
+  for (const tag of tags) {
+    const parts = crumbParts(tag);
+    if (parts.length < 2) continue;
+    const room = ROOM_BY_SUFFIX[parts[parts.length - 1].toLowerCase()];
+    if (room) return room;
+  }
+}
+
+export function genderQueryTags(gender: Gender) {
+  const label = gender === "women" ? "Women" : "Men";
+  return [`Gender_${gender}`, `Gender_${label}`, label];
+}
+
 export function resolveGender(node: Pick<ShopifyNavNode, "tags" | "title">): Gender {
-  const tag = tagValue(node.tags, "Gender")?.toLowerCase();
-  if (tag === "women" || tag === "men") return tag;
-  return /\bwomen\b/i.test(node.title) ? "women" : "men";
+  const prefixed = tagValue(node.tags, "Gender")?.toLowerCase();
+  if (prefixed === "women" || prefixed === "woman") return "women";
+  if (prefixed === "men" || prefixed === "man") return "men";
+  if (hasTag(node.tags, "Women") || hasTag(node.tags, "Woman")) return "women";
+  if (hasTag(node.tags, "Men") || hasTag(node.tags, "Man")) return "men";
+  if (/\bwom[ae]n(?:['’]s)?\b/i.test(node.title)) return "women";
+  if (/\bmen(?:['’]?s)?\b|\bmenswear\b/i.test(node.title)) return "men";
+  return "men";
 }
 
 export function resolveDepartment(
   node: Pick<ShopifyNavNode, "tags" | "productType">,
 ): Department {
-  const source = tagValue(node.tags, "Category") ?? node.productType;
-  const value = source.toLowerCase();
-  if (value.startsWith("accessories")) return "accessories";
-  if (value.startsWith("shoes")) return "shoes";
+  const source = (tagValue(node.tags, "Category") ?? "").toLowerCase();
+  if (source.startsWith("accessories") || source.startsWith("bags")) return "accessories";
+  if (source.startsWith("shoes")) return "shoes";
+  if (source.startsWith("clothing")) return "clothing";
+  const fromCrumb = departmentFromCrumbs(node.tags);
+  if (fromCrumb) return fromCrumb;
+  if (hasTag(node.tags, "Shoes")) return "shoes";
+  if (hasTag(node.tags, "Clothing")) return "clothing";
+  if (hasTag(node.tags, "Accessories") || hasTag(node.tags, "Bags")) return "accessories";
+  const type = node.productType.toLowerCase();
+  if (type.startsWith("accessories") || type.startsWith("bags")) return "accessories";
+  if (type.startsWith("shoes")) return "shoes";
   return "clothing";
 }
 
 export function resolveSubcategory(
   node: Pick<ShopifyNavNode, "tags" | "productType">,
 ) {
-  const tag = tagValue(node.tags, "Subcategory");
-  if (tag) return tag;
+  const tagged = tagValue(node.tags, "Subcategory");
+  if (tagged) return tagged;
+  const crumbs = node.tags
+    .map(crumbParts)
+    .filter((parts) => parts.length === 2 && ROOM_BY_SUFFIX[parts[1].toLowerCase()]);
+  crumbs.sort((left, right) => left[0].length - right[0].length);
+  if (crumbs[0]) return crumbs[0][0];
   const [, ...rest] = node.productType.split(" ");
   return rest.join(" ") || node.productType;
 }

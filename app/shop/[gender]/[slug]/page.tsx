@@ -1,20 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { CardGrid } from "@/components/CardGrid";
-import { LinedShot } from "@/components/LinedShot";
 import { ShopGrid } from "@/components/ShopGrid";
 import { ShopLooks } from "@/components/ShopLooks";
 import { ShopRooms } from "@/components/ShopRooms";
 import { ShopSkeleton } from "@/components/Skeleton";
 import {
   DEPARTMENT_LABEL,
+  departmentForShopSlug,
   getGenderNavigation,
   getScopedShop,
   resolveShopSlug,
 } from "@/lib/catalog";
-import { formatMoney } from "@/lib/format";
 import { getLookWithImage, looksForShop } from "@/lib/looks";
 import { brandToSlug, isGender, toCard, type Gender, type Product } from "@/lib/products";
 
@@ -84,21 +81,18 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
   const resolved = resolveShopSlug(slug);
   const nav = await getGenderNavigation();
   const world = nav.find((item) => item.gender === gender);
-  const named = world?.departments
-    .flatMap((department) => department.categories)
-    .find((category) => category.slug === slug)?.name;
-  const rooms = resolved.department
-    ? (world?.departments.filter((department) => department.slug === resolved.department) ?? [])
-    : (world?.departments.filter((department) =>
-        department.categories.some((category) => category.slug === slug),
-      ) ?? []);
+  const departmentSlug = resolved.department ?? departmentForShopSlug(world, slug);
+  const rooms = departmentSlug
+    ? (world?.departments.filter((department) => department.slug === departmentSlug) ?? [])
+    : [];
   const department = rooms[0];
-  const title = named ?? (resolved.department ? DEPARTMENT_LABEL[resolved.department] : slug.replace(/-/g, " "));
+  const named = department?.categories.find((category) => category.slug === slug)?.name;
+  const title = named ?? (departmentSlug ? DEPARTMENT_LABEL[departmentSlug] : slug.replace(/-/g, " "));
   const defs = looksForShop(gender, slug).slice(0, 4);
   const [products, kits] = await Promise.all([
     getScopedShop({
       gender,
-      department: resolved.department,
+      department: departmentSlug,
       subcategory: named ?? resolved.subcategory,
     }),
     Promise.all(defs.map((look) => getLookWithImage(look))),
@@ -113,10 +107,9 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
       splash: kit.look.splash,
       count: kit.products.length,
       image:
-        stillForRoom(kit.products, resolved.department ?? department?.slug, named ?? resolved.subcategory) ??
+        stillForRoom(kit.products, departmentSlug ?? department?.slug, named ?? resolved.subcategory) ??
         kit.image,
     }));
-  const featured = products.filter((product) => product.available && product.images[0]).slice(0, 4);
   const label = gender === "women" ? "Women" : "Men";
   const field =
     ROOM_FIELD[department?.slug ?? "clothing"]?.[gender] ??
@@ -147,40 +140,6 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
       </section>
 
       <ShopRooms gender={gender} departments={rooms} active={slug} accent={field} />
-
-      {featured.length > 0 ? (
-        <section>
-          <div className="flex items-end justify-between px-5 pt-8 pb-4 md:px-10">
-            <p className="eyebrow">In this room</p>
-            <p className="eyebrow">{featured.length} of {products.length}</p>
-          </div>
-          <CardGrid cols="four">
-            {featured.map((product) => (
-              <LinedShot
-                key={product.id}
-                href={`/product/${product.slug}`}
-                image={product.images[0]}
-                alt={`${product.brand} ${product.name}`}
-                kicker={product.brand}
-                title={product.name}
-                meta={formatMoney(product.price)}
-                priority
-              />
-            ))}
-          </CardGrid>
-        </section>
-      ) : department?.image ? (
-        <div className="packshot max-w-md">
-          <Image
-            src={department.image}
-            alt={`${label} ${title}`}
-            fill
-            priority
-            className="object-contain"
-            sizes="50vw"
-          />
-        </div>
-      ) : null}
 
       <ShopLooks looks={looks} title={lookTitle} />
 

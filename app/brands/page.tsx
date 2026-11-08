@@ -1,6 +1,4 @@
-import { CardGrid } from "@/components/CardGrid";
-import { LinedShot } from "@/components/LinedShot";
-import { getAllBrands, getTopBrands } from "@/lib/catalog";
+import { getAllBrands } from "@/lib/catalog";
 import Link from "next/link";
 
 export const revalidate = 900;
@@ -24,11 +22,7 @@ function groupByLetter(brands: Awaited<ReturnType<typeof getAllBrands>>) {
 }
 
 export default async function BrandsPage() {
-  const [brands, top] = await Promise.all([getAllBrands(), getTopBrands()]);
-  const house = [...top, ...brands.filter((brand) => brand.image && !top.some((item) => item.slug === brand.slug))].slice(
-    0,
-    12,
-  );
+  const brands = await getAllBrands();
   const letters = groupByLetter(brands);
 
   return (
@@ -37,27 +31,6 @@ export default async function BrandsPage() {
         <p className="eyebrow">Brands</p>
         <h1 className="display mt-4 max-w-3xl text-5xl md:text-7xl">The names on the cloth.</h1>
       </section>
-
-      {house.length > 0 ? (
-        <section>
-          <div className="flex items-end justify-between px-5 py-8 md:px-10">
-            <p className="eyebrow">In the house</p>
-            <p className="eyebrow">{brands.length} names</p>
-          </div>
-          <CardGrid>
-            {house.map((brand) => (
-              <LinedShot
-                key={brand.slug}
-                href={`/brands/${brand.slug}`}
-                image={brand.image}
-                alt={brand.name}
-                kicker={`${brand.count} pieces`}
-                title={brand.name}
-              />
-            ))}
-          </CardGrid>
-        </section>
-      ) : null}
 
       {letters.length > 0 ? (
         <section className="px-5 py-16 md:px-10 md:py-24">
@@ -78,7 +51,7 @@ export default async function BrandsPage() {
             ))}
           </div>
         </section>
-      ) : house.length > 0 ? null : (
+      ) : (
         <section className="px-5 py-16 md:px-10">
           <p className="text-sm">No brands in this shop yet.</p>
         </section>

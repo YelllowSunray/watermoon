@@ -19,7 +19,8 @@ function tag(value: string) {
 }
 
 function genderClause(gender: "women" | "men") {
-  return `(${tag(`Gender_${gender}`)} OR ${tag(`Gender_${gender === "women" ? "Women" : "Men"}`)})`;
+  const label = gender === "women" ? "Women" : "Men";
+  return `(${tag(`Gender_${gender}`)} OR ${tag(`Gender_${label}`)} OR ${tag(label)})`;
 }
 
 function vendor(name: string) {

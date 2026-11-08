@@ -56,15 +56,17 @@ let lockedY = 0;
 function lockScroll(locked: boolean) {
   const root = document.documentElement;
   const body = document.body;
+  const isLocked = body.classList.contains("lock-scroll");
   if (locked) {
-    if (!body.classList.contains("lock-scroll")) {
+    if (!isLocked) {
       lockedY = window.scrollY;
       body.style.top = `-${lockedY}px`;
+      root.classList.add("lock-scroll");
+      body.classList.add("lock-scroll");
     }
-    root.classList.add("lock-scroll");
-    body.classList.add("lock-scroll");
     return;
   }
+  if (!isLocked) return;
   root.classList.remove("lock-scroll");
   body.classList.remove("lock-scroll");
   body.style.top = "";
@@ -109,8 +111,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [sizePrefs, sizesReady]);
 
   useEffect(() => {
-    lockScroll(bagOpen || searchOpen || menuOpen);
-    return () => lockScroll(false);
+    const shouldLock = bagOpen || searchOpen || menuOpen;
+    lockScroll(shouldLock);
+    return () => {
+      if (shouldLock) lockScroll(false);
+    };
   }, [bagOpen, searchOpen, menuOpen]);
 
   useEffect(() => {

@@ -154,7 +154,7 @@ export function GenderWorld({
                       className={`${field} flex min-h-[18vh] flex-col justify-end px-5 py-6 md:min-h-[24vh] md:px-8`}
                     >
                       <p className="eyebrow">{label}</p>
-                      <p className="display mt-2 text-3xl md:text-5xl">{department.name}</p>
+                      <p className="display mt-2 text-3xl md:text-5xl">{department.name} →</p>
                     </div>
                   </Link>
                 </li>
@@ -198,14 +198,14 @@ export function GenderWorld({
               All rooms
             </Link>
           </div>
-          <ul className={`grid ${streetCols(stories.length)}`}>
+          <ul className="grid grid-cols-2">
             {stories.map((story) => (
               <li key={story.slug} className="min-h-0">
                 <Link href={`/stories/${story.slug}`} className={`${SPLASH_FIELD[story.splash]} flex h-full flex-col`}>
                   <div className="p-4 md:p-5">
                     <div className="still">
                       {story.image ? (
-                        <Image src={story.image} alt="" fill className="object-contain" sizes="25vw" />
+                        <Image src={story.image} alt="" fill className="object-contain" sizes="50vw" />
                       ) : null}
                     </div>
                   </div>

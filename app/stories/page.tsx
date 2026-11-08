@@ -63,7 +63,7 @@ function WorldStreet({
       <div className={`${splash} px-5 py-4 md:px-10`}>
         <p className="display text-2xl">{label}</p>
       </div>
-      <ul className="grid grid-cols-2 md:grid-cols-3">
+      <ul className="grid grid-cols-2">
         {stories.map((story, index) => (
           <li key={story.slug}>
             <Link href={`/stories/${story.slug}`} className={`${SPLASH_FIELD[story.splash]} flex h-full flex-col`}>
@@ -75,7 +75,7 @@ function WorldStreet({
                       alt=""
                       fill
                       className="object-contain"
-                      sizes="33vw"
+                      sizes="50vw"
                       priority={index < 2}
                     />
                   ) : null}

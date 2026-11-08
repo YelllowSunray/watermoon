@@ -27,7 +27,8 @@ export function QuickBuy({
   product: Buyable | ProductCard;
   className?: string;
 }) {
-  const { addToBag, rememberSize, sizeFor } = useStore();
+  const { addToBag, rememberSize, sizeFor, bag: lines } = useStore();
+  const inBag = lines.some((line) => line.handle === product.slug);
   const buyable = product.variants.filter((variant) => variant.available);
   const color = buyable[0]?.color || product.colors[0]?.name || "";
   const sizes = useMemo(() => buyableSizes(product, color), [product, color]);
@@ -35,6 +36,7 @@ export function QuickBuy({
   const [size, setSize] = useState(() => defaultSize(product, color, pref));
   const [ask, setAsk] = useState(false);
   const needsSize = sizes.length > 1 || Boolean(sizes[0] && sizes[0] !== "One Size");
+  const marked = inBag && !(ask && needsSize);
   const variant = pickVariant(product, needsSize ? size : sizes[0] || size, color);
 
   useEffect(() => {
@@ -75,14 +77,14 @@ export function QuickBuy({
 
   return (
     <div
-      className={`pointer-events-auto ${className}`}
+      className={`pointer-events-auto flex flex-col items-center ${className}`}
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
       }}
     >
       {ask && needsSize ? (
-        <ul className="mb-2 flex flex-wrap gap-1.5">
+        <ul className="mb-1.5 flex flex-wrap justify-center gap-1">
           {sizes.map((entry) => {
             const option = pickVariant(product, entry, color);
             return (
@@ -90,7 +92,7 @@ export function QuickBuy({
                 <button
                   type="button"
                   disabled={!option}
-                  className={`choice min-w-10 disabled:opacity-30 ${
+                  className={`choice quick-choice min-w-9 disabled:opacity-30 ${
                     size === entry ? "choice-on" : ""
                   }`}
                   onClick={() => {
@@ -107,7 +109,8 @@ export function QuickBuy({
       ) : null}
       <button
         type="button"
-        className="cta w-full min-h-10 px-3"
+        className={`quick-add ${marked ? "quick-add-on" : ""}`}
+        aria-label={marked ? "Added to bag" : ask && needsSize ? "Choose size" : "Add to bag"}
         disabled={ask && needsSize ? false : !variant && !needsSize}
         onClick={() => {
           if (needsSize && !size) {
@@ -117,7 +120,7 @@ export function QuickBuy({
           bag();
         }}
       >
-        {ask && needsSize ? "Size" : "Add"}
+        {ask && needsSize ? "Size" : marked ? "Added" : "Add"}
       </button>
     </div>
   );

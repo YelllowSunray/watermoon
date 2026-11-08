@@ -238,6 +238,39 @@ button {
   opacity: 0.86;
 }
 
+.quick-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  min-width: 4.5rem;
+  padding: 0 0.7rem;
+  background: var(--paper);
+  color: var(--violet);
+  box-shadow: inset 0 0 0 2px var(--violet);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease),
+    color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.quick-add:hover {
+  opacity: 0.82;
+}
+
+.quick-add-on {
+  background: var(--violet);
+  color: #fff;
+  box-shadow: none;
+}
+
+.quick-choice {
+  min-height: 2rem;
+  padding: 0 0.55rem;
+  font-size: 10px;
+}
+
 a.room-chip-paper {
   background: #fff;
   color: var(--ink);
@@ -524,6 +557,7 @@ a.room-chip-paper {
   .cta,
   .cta-ghost,
   .cta-splash,
+  .quick-add,
   .room-chip,
   .mega,
   .mega-link,

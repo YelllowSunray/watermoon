@@ -1,139 +1,142 @@
-import Link from "next/link";
+import { SaleFilters } from "@/components/SaleFilters";
 import { ShopGrid } from "@/components/ShopGrid";
-import { getSaleProducts, roomsFromProducts } from "@/lib/catalog";
-import { brandToSlug, isDepartment, isGender, toCard, type Gender } from "@/lib/products";
+import { DEPARTMENT_LABEL, getSaleProducts } from "@/lib/catalog";
+import { SITE_NAME } from "@/lib/site";
+import {
+  brandToSlug,
+  isDepartment,
+  isGender,
+  type Department,
+  type Gender,
+  type Product,
+} from "@/lib/products";
+import type { Metadata } from "next";
+import Link from "next/link";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Sale",
-  description: "Pieces with a second price.",
-  alternates: { canonical: "/sale" },
+  description: `The cut at ${SITE_NAME} — marked pieces, still the house.`,
 };
+
+type SaleQuery = {
+  gender?: string | string[];
+  room?: string | string[];
+  sort?: string | string[];
+};
+
+type SaleSort = "cut" | "price-asc" | "price-desc";
+
+const DEPARTMENTS: Department[] = ["clothing", "accessories", "shoes"];
+const WORLDS: { gender: Gender; label: string }[] = [
+  { gender: "women", label: "Women" },
+  { gender: "men", label: "Men" },
+];
+const ROOMS = DEPARTMENTS.map((slug) => ({ slug, name: DEPARTMENT_LABEL[slug] }));
+
+function param(value?: string | string[]) {
+  return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+}
+
+function isSaleSort(value: string): value is SaleSort {
+  return value === "cut" || value === "price-asc" || value === "price-desc";
+}
+
+function discountRatio(product: Product) {
+  if (!product.compareAtPrice || product.compareAtPrice <= product.price) return 0;
+  return (product.compareAtPrice - product.price) / product.compareAtPrice;
+}
+
+function sortSale(products: Product[], sort: SaleSort) {
+  return [...products].sort((left, right) => {
+    const byName = left.name.localeCompare(right.name);
+    if (sort === "price-asc") return left.price - right.price || byName;
+    if (sort === "price-desc") return right.price - left.price || byName;
+    const cut = discountRatio(right) - discountRatio(left);
+    return cut || byName;
+  });
+}
+
+function presentCategories(products: Product[], department: Department, gender?: Gender) {
+  const names = new Map<string, string>();
+  for (const product of products) {
+    if (gender && product.gender !== gender) continue;
+    if (product.department !== department) continue;
+    const slug = brandToSlug(product.subcategory);
+    if (!slug || names.has(slug)) continue;
+    names.set(slug, product.subcategory);
+  }
+  return [...names.entries()]
+    .map(([slug, name]) => ({ slug, name }))
+    .sort((left, right) => left.name.localeCompare(right.name));
+}
 
 export default async function SalePage({
   searchParams,
 }: {
-  searchParams: Promise<{ gender?: string; room?: string }>;
+  searchParams: Promise<SaleQuery>;
 }) {
   const query = await searchParams;
-  const rawGender = query.gender ?? "";
-  const gender = isGender(rawGender) ? rawGender : undefined;
-  const room = query.room?.trim() || undefined;
-  const products = await getSaleProducts(48);
-  const worlds = roomsFromProducts(products);
-  const shownWorlds = gender ? worlds.filter((world) => world.gender === gender) : worlds;
-  const listed = products.filter((product) => {
-    if (gender && product.gender !== gender) return false;
+  const products = await getSaleProducts(100);
+  const askedGender = param(query.gender) ?? "";
+  const gender = isGender(askedGender) ? askedGender : undefined;
+  const room = param(query.room);
+  const askedSort = param(query.sort) ?? "";
+  const sort: SaleSort = isSaleSort(askedSort) ? askedSort : "cut";
+  const world = gender ? products.filter((product) => product.gender === gender) : products;
+  const scoped = world.filter((product) => {
     if (!room) return true;
     if (isDepartment(room)) return product.department === room;
     return brandToSlug(product.subcategory) === room;
   });
+  const listed = sortSale(scoped, sort);
+  const activeDepartment = room
+    ? isDepartment(room)
+      ? room
+      : listed[0]?.department ?? scoped[0]?.department
+    : undefined;
+  const categories = activeDepartment
+    ? presentCategories(products, activeDepartment, gender)
+    : [];
 
   return (
     <div>
-      <section className="field-vermillion px-5 py-12 md:px-10 md:py-16">
-        <p className="eyebrow">Sale</p>
-        <h1 className="display mt-3 text-5xl md:text-7xl">The cut. Still edited.</h1>
-        <p className="mt-4 max-w-md text-sm leading-6">
-          {listed.length} {listed.length === 1 ? "piece" : "pieces"}
-          {gender ? ` · ${gender === "women" ? "Women" : "Men"}` : ""}
-          {room ? ` · ${room.replace(/-/g, " ")}` : ""}. A second price. Same cloth.
+      <section className="field-vermillion px-5 py-10 md:px-10 md:py-14">
+        <p className="eyebrow">
+          <Link href="/sale">Sale</Link>
         </p>
-        <div className="mt-8 flex flex-wrap gap-2">
-          {gender || room ? (
-            <Link
-              href="/sale"
-              className="inline-flex min-h-12 items-center border border-white px-5 text-xs tracking-[0.08em] uppercase"
-            >
+        <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <h1 className="display max-w-3xl text-5xl md:text-7xl">The cut.</h1>
+          <p className="eyebrow">
+            {listed.length} {listed.length === 1 ? "piece" : "pieces"}
+          </p>
+        </div>
+      </section>
+
+      {products.length > 0 ? (
+        <SaleFilters
+          worlds={WORLDS}
+          rooms={ROOMS}
+          categories={categories}
+          selected={{ gender, room, sort }}
+        />
+      ) : null}
+
+      <section className="px-5 py-12 md:px-10 md:py-16">
+        {listed.length > 0 ? (
+          <ShopGrid products={listed} dense />
+        ) : products.length > 0 ? (
+          <p className="text-sm">
+            Nothing in this cut.{" "}
+            <Link href="/sale" className="underline">
               All sale
             </Link>
-          ) : null}
-          {worlds.map((world) => {
-            const on = gender === world.gender && !room;
-            return (
-              <Link
-                key={world.gender}
-                href={`/sale?gender=${world.gender}`}
-                className={`inline-flex min-h-12 items-center px-5 text-xs tracking-[0.08em] uppercase ${
-                  on ? "field-ink" : "border border-white"
-                }`}
-              >
-                {world.label}
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {shownWorlds.map((world) => (
-        <SaleRooms key={world.gender} world={world} gender={gender} room={room} />
-      ))}
-
-      <section>
-        <div className="px-5 py-8 md:px-10">
-          <p className="eyebrow">The pieces</p>
-        </div>
-        <ShopGrid products={listed.map(toCard)} dense />
+          </p>
+        ) : (
+          <p className="text-sm">No marked pieces in the house yet.</p>
+        )}
       </section>
     </div>
-  );
-}
-
-function SaleRooms({
-  world,
-  gender,
-  room,
-}: {
-  world: { gender: Gender; label: string; departments: Array<{ slug: string; name: string; categories: Array<{ slug: string; name: string }> }> };
-  gender?: Gender;
-  room?: string;
-}) {
-  const her = world.gender === "women";
-  const href = (next: string) => `/sale?gender=${world.gender}&room=${next}`;
-
-  return (
-    <section className="bg-ivory px-5 py-6 md:px-10">
-      <p className={`display mb-4 text-3xl ${her ? "text-vermillion" : ""}`}>{world.label}</p>
-      {world.departments.map((department) => (
-        <div key={department.slug} className="mb-5 last:mb-0">
-          <p className="eyebrow mb-3">
-            {world.label} · {department.name}
-          </p>
-          <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
-            <li className="shrink-0">
-              <Link
-                href={href(department.slug)}
-                className={`room-chip ${
-                  gender === world.gender && room === department.slug
-                    ? her
-                      ? "field-vermillion"
-                      : "field-ink"
-                    : "bg-white text-ink hover:bg-cobalt hover:text-white"
-                }`}
-              >
-                All {department.name.toLowerCase()}
-              </Link>
-            </li>
-            {department.categories.map((category) => (
-              <li key={category.slug} className="shrink-0">
-                <Link
-                  href={href(category.slug)}
-                  className={`room-chip ${
-                    gender === world.gender && room === category.slug
-                      ? her
-                        ? "field-vermillion"
-                        : "field-ink"
-                      : "bg-white text-ink hover:bg-cobalt hover:text-white"
-                  }`}
-                >
-                  {category.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </section>
   );
 }
