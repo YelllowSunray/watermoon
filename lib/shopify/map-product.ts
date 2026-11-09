@@ -164,6 +164,21 @@ function toDisplayColor(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function optionNamed(options: Map<string, string>, pattern: RegExp) {
+  for (const [name, value] of options) {
+    if (pattern.test(name) && value.trim()) return value.trim();
+  }
+}
+
+function variantColor(options: Map<string, string>) {
+  const value = optionNamed(options, /^(colou?rs?|colore|couleur)$/i);
+  return value ? toDisplayColor(normalizeColorName(value)) : "";
+}
+
+function variantSize(options: Map<string, string>) {
+  return optionNamed(options, /size|taglia|taille|maat/i) ?? "One Size";
+}
+
 function tagValue(tags: string[], prefix: string) {
   const needle = `${prefix}_`.toLowerCase();
   const match = tags.find((tag) => tag.toLowerCase().startsWith(needle));
@@ -303,8 +318,8 @@ export function mapShopifyProduct(node: ShopifyProductNode): Product {
 
     return {
       id: variant.id,
-      color: toDisplayColor(normalizeColorName(options.get("Color") ?? "")),
-      size: options.get("Size") ?? "One Size",
+      color: variantColor(options),
+      size: variantSize(options),
       price,
       compareAtPrice:
         compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined,

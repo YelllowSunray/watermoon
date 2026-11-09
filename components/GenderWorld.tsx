@@ -82,7 +82,7 @@ export function GenderWorld({
           hero
         />
       ) : (
-        <section className={`${splash} px-5 py-8 md:px-10 md:py-16`}>
+        <section className={`${splash} px-5 py-8 md:px-10 md:py-16 2xl:px-16`}>
           <p className="eyebrow">{label}</p>
           <h1 className="display mt-3 max-w-3xl text-4xl md:text-7xl">{headline}</h1>
           <div className="mt-8 flex flex-wrap gap-2">
@@ -98,7 +98,7 @@ export function GenderWorld({
               </Link>
             ) : null}
           </div>
-          <p className="mt-5 max-w-sm text-sm leading-6">
+          <p className="deck mt-5 max-w-sm">
             {SHIPS_LINE}
           </p>
         </section>
@@ -211,7 +211,7 @@ export function GenderWorld({
                   </div>
                   <div className="flex flex-1 flex-col justify-end px-5 pb-6">
                     <p className="display text-2xl md:text-3xl">{story.title}</p>
-                    <p className="mt-1 line-clamp-2 max-w-xs text-sm">{story.line}</p>
+                    <p className="deck mt-1 line-clamp-2 max-w-xs">{story.line}</p>
                   </div>
                 </Link>
               </li>
@@ -275,7 +275,7 @@ function LookTile({
             {label} · {look.count} pieces
           </p>
           <p className="display mt-3 text-4xl md:text-6xl">{look.title}</p>
-          <p className="mt-3 max-w-md text-sm leading-6">{look.line}</p>
+          <p className="deck mt-3 max-w-md">{look.line}</p>
           <span className="cta-splash mt-6 self-start">Shop this look</span>
         </div>
       </Link>

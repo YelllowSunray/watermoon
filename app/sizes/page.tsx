@@ -1,5 +1,8 @@
 import { HelpMast, HelpStreet } from "@/components/HelpStreet";
 import { SizePrefs } from "@/components/SizePrefs";
+import { getSizeOptions } from "@/lib/catalog";
+
+export const revalidate = 300;
 
 export const metadata = {
   title: "Sizes",
@@ -7,7 +10,8 @@ export const metadata = {
   alternates: { canonical: "/sizes" },
 };
 
-export default function SizesPage() {
+export default async function SizesPage() {
+  const options = await getSizeOptions();
   return (
     <div>
       <HelpMast
@@ -16,7 +20,7 @@ export default function SizesPage() {
         line="Cloth, trousers, shoes. The chips are sizes this shop actually has. They stay on this browser."
         splash="ink"
       />
-      <SizePrefs />
+      <SizePrefs options={options} />
       <HelpStreet current="/sizes" />
     </div>
   );

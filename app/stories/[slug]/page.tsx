@@ -76,7 +76,7 @@ export default async function StoryPage({
             <div>
               <p className="eyebrow">The edit · {story.title}</p>
               <h1 className="display mt-3 max-w-xl text-4xl md:text-6xl">{story.line}</h1>
-              <p className="mt-5 max-w-sm text-sm leading-6">
+              <p className="deck mt-5 max-w-sm">
                 {products.length} {products.length === 1 ? "piece" : "pieces"}
                 {world ? ` · ${world}` : ""}. A room from this shop. Not a feed.
               </p>
@@ -170,7 +170,7 @@ export default async function StoryPage({
                   {look.gender === "women" ? "Women" : "Men"} · Shop the look · {look.count} pieces
                 </p>
                 <p className="display mt-3 text-3xl md:text-5xl">{look.title}</p>
-                <p className="mt-3 max-w-sm text-sm leading-6">{look.line}</p>
+                <p className="deck mt-3 max-w-sm">{look.line}</p>
                 <span className="cta-splash mt-6 self-start">Shop this look</span>
               </Link>
             </li>

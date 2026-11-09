@@ -66,7 +66,7 @@ export default async function ProductPage({
       <JsonLd data={productJsonLd(product)} />
 
       <div
-        className={`${product.gender === "women" ? "field-vermillion" : "field-ink"} px-5 py-3 md:px-8`}
+        className={`${product.gender === "women" ? "field-vermillion" : "field-ink"} px-5 py-3 md:px-8 2xl:px-16`}
       >
         <p className="eyebrow">
           <Link href={`/${product.gender}`}>{world}</Link>
@@ -79,9 +79,9 @@ export default async function ProductPage({
         </p>
       </div>
 
-      <div className="grid min-w-0 overflow-x-hidden md:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.55fr)]">
+      <div className="grid min-w-0 overflow-x-hidden lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] 2xl:grid-cols-[minmax(0,1.05fr)_minmax(520px,0.95fr)] 3xl:grid-cols-[minmax(0,1fr)_minmax(720px,1fr)]">
         <ProductGallery images={product.images} alt={`${product.brand} ${product.name}`} />
-        <div className="min-w-0 border-l border-line px-5 py-10 md:sticky md:top-[4.75rem] md:h-fit md:max-h-[calc(100dvh-4.75rem)] md:overflow-y-auto md:px-10 md:py-14">
+        <div className="buy-panel min-w-0 border-l border-line px-5 py-10 lg:sticky lg:top-[67px] lg:h-fit lg:max-h-[calc(100dvh-67px)] lg:overflow-y-auto lg:px-8 lg:py-7 xl:top-[71px] xl:max-h-[calc(100dvh-71px)] 2xl:px-12 2xl:py-12 3xl:px-16 3xl:py-16">
           <ProductBuy product={product} />
         </div>
       </div>

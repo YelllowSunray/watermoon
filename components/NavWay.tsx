@@ -79,7 +79,7 @@ export function NavStart({ onPick }: { onPick?: () => void }) {
     <Link
       href="/"
       aria-label={`${SITE_NAME} start`}
-      className="hidden h-11 w-11 shrink-0 items-center justify-center text-ink transition-opacity duration-160 ease-out hover:opacity-60 md:flex"
+      className="hidden h-11 w-11 shrink-0 items-center justify-center text-ink transition-opacity duration-160 ease-out hover:opacity-60 xl:flex"
       onClick={onPick}
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
@@ -104,10 +104,10 @@ export function NavHome({ onPick }: { onPick?: () => void }) {
       href="/"
       aria-current={home ? "page" : undefined}
       aria-label={SITE_NAME}
-      className="flex min-w-0 items-center gap-2.5"
+      className="flex items-center gap-2.5"
       onClick={onPick}
     >
-      <span className="hidden h-9 w-9 shrink-0 items-center justify-center bg-ink text-white md:flex md:h-10 md:w-10">
+      <span className="hidden h-9 w-9 shrink-0 items-center justify-center bg-ink text-white xl:flex xl:h-10 xl:w-10">
         <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden>
           <path
             fill="currentColor"
@@ -115,7 +115,7 @@ export function NavHome({ onPick }: { onPick?: () => void }) {
           />
         </svg>
       </span>
-      <span className="display truncate text-[22px] leading-none md:text-[36px]">{SITE_NAME}</span>
+      <span className="display shrink-0 text-[22px] leading-none xl:text-[36px]">{SITE_NAME}</span>
     </Link>
   );
 }

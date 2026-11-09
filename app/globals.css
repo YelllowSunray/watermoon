@@ -29,6 +29,7 @@
   --color-orange: var(--orange);
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-display);
+  --breakpoint-3xl: 120rem;
 }
 
 html,
@@ -88,10 +89,15 @@ button {
 }
 
 .eyebrow {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: inherit;
+}
+
+.deck {
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .nav-link {
@@ -319,10 +325,103 @@ a.room-chip-paper {
   transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
+.choice-size {
+  min-width: 2.75rem;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.4rem 0.6rem;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .choice-size {
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0.28rem 0.5rem;
+  }
+}
+
 .choice-on {
   border-color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--ink);
   font-weight: 600;
+}
+
+.buy-panel {
+  container-type: inline-size;
+  container-name: buy;
+}
+
+.buy-panel .buy-brand {
+  font-size: clamp(0.8125rem, 2.8cqi, 2.25rem);
+}
+
+.buy-panel .buy-title {
+  font-size: clamp(2.25rem, 12.8cqi, 14rem);
+}
+
+.buy-panel .buy-price {
+  margin-top: clamp(0.75rem, 3.2cqi, 2.5rem);
+  font-size: clamp(1.25rem, 4.4cqi, 4.5rem);
+}
+
+.buy-panel .buy-block {
+  margin-top: clamp(1.25rem, 4.2cqi, 3.5rem);
+}
+
+.buy-panel .buy-cta {
+  min-height: clamp(3rem, 10.5cqi, 8rem);
+  font-size: clamp(0.75rem, 2.7cqi, 2.15rem);
+  padding-inline: clamp(1.25rem, 4cqi, 3.5rem);
+}
+
+.buy-panel .choice-size {
+  min-height: clamp(2.5rem, 8.8cqi, 6.5rem);
+  min-width: clamp(2.5rem, 8.8cqi, 6.5rem);
+  padding: clamp(0.28rem, 1.2cqi, 1rem) clamp(0.5rem, 1.8cqi, 1.4rem);
+  font-size: clamp(0.8125rem, 2.8cqi, 2rem);
+}
+
+.buy-panel .choice-size span:last-child:not(:only-child) {
+  font-size: clamp(9px, 1.8cqi, 1.15rem);
+}
+
+.buy-panel .buy-heart {
+  width: clamp(2.25rem, 6cqi, 4.75rem);
+  height: clamp(2.25rem, 6cqi, 4.75rem);
+}
+
+.buy-panel .buy-heart svg {
+  width: clamp(16px, 3.4cqi, 36px);
+  height: clamp(16px, 3.4cqi, 36px);
+}
+
+.buy-panel .buy-copy {
+  margin-top: clamp(1.25rem, 4.2cqi, 3.25rem);
+  max-width: 28em;
+  font-size: clamp(0.875rem, 2.9cqi, 1.85rem);
+  line-height: 1.55;
+}
+
+.buy-panel .buy-facts {
+  margin-top: clamp(1.25rem, 4.2cqi, 3.25rem);
+  padding-top: clamp(1.25rem, 3.6cqi, 2.75rem);
+  font-size: clamp(0.875rem, 2.7cqi, 1.65rem);
+}
+
+.buy-panel .buy-facts > div {
+  grid-template-columns: minmax(6.5rem, 0.3fr) 1fr;
+  gap: clamp(1rem, 3cqi, 2.25rem);
+}
+
+.buy-panel .buy-trust {
+  margin-top: clamp(0.75rem, 2.8cqi, 2rem);
+  font-size: clamp(0.7rem, 2.2cqi, 1.35rem);
+  gap: clamp(0.75rem, 2.6cqi, 1.75rem);
+}
+
+.buy-panel .eyebrow {
+  font-size: clamp(13px, 2.15cqi, 1.35rem);
 }
 
 .pay-mark {

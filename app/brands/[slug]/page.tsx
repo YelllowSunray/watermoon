@@ -286,7 +286,7 @@ function BrandLooks({
                   {look.gender === "women" ? "Women" : "Men"} · {look.count} pieces
                 </p>
                 <p className="display mt-2 text-2xl md:text-3xl">{look.title}</p>
-                <p className="mt-2 line-clamp-2 max-w-xs text-sm">{look.line}</p>
+                <p className="deck mt-2 line-clamp-2 max-w-xs">{look.line}</p>
               </div>
             </Link>
           </li>

@@ -73,7 +73,7 @@ function WorldStreet({
               <div className="flex flex-1 flex-col justify-end px-4 pb-5">
                 <p className="eyebrow">{look.count} pieces</p>
                 <p className="display mt-1 text-2xl md:text-3xl">{look.title}</p>
-                <p className="mt-1 line-clamp-2 max-w-xs text-sm">{look.line}</p>
+                <p className="deck mt-1 line-clamp-2 max-w-xs">{look.line}</p>
               </div>
             </Link>
           </li>

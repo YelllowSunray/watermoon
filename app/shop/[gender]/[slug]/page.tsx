@@ -120,7 +120,7 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
     <div>
       <span className={`block h-1.5 ${field}`} />
 
-      <section className="px-5 py-8 md:px-10 md:py-10">
+      <section className="px-5 py-8 md:px-10 md:py-10 2xl:px-16">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-xl">
             <p className="eyebrow">
@@ -132,8 +132,8 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
                 </>
               ) : null}
             </p>
-            <h1 className="display mt-3 text-5xl md:text-6xl">{title}</h1>
-            <p className="mt-3 max-w-md text-sm leading-6">{roomLine(department?.slug, title)}</p>
+            <h1 className="display mt-3 text-5xl md:text-6xl 2xl:text-7xl">{title}</h1>
+            <p className="deck mt-3 max-w-md">{roomLine(department?.slug, title)}</p>
           </div>
           <p className="eyebrow">{products.length} pieces</p>
         </div>
@@ -144,7 +144,7 @@ async function ShopRoom({ gender, slug }: { gender: Gender; slug: string }) {
       <ShopLooks looks={looks} title={lookTitle} />
 
       <section>
-        <div className="flex flex-wrap items-end justify-between gap-3 px-5 py-8 md:px-10">
+        <div className="flex flex-wrap items-end justify-between gap-3 px-5 py-8 md:px-10 2xl:px-16">
           <p className="eyebrow">The pieces</p>
           <p className="eyebrow">{products.length} in this room</p>
         </div>

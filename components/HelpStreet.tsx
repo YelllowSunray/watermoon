@@ -31,7 +31,7 @@ export function HelpMast({
     <section className={`${SPLASH_FIELD[splash]} px-5 py-16 md:px-10 md:py-24`}>
       <p className="eyebrow">{eyebrow}</p>
       <h1 className="display mt-4 max-w-3xl text-5xl md:text-7xl">{title}</h1>
-      {line ? <p className="mt-6 max-w-md text-sm leading-6">{line}</p> : null}
+      {line ? <p className="deck mt-6 max-w-md">{line}</p> : null}
       {children}
     </section>
   );

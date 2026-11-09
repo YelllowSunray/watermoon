@@ -194,7 +194,7 @@ export function SaleFilters({
         <span className="eyebrow shrink-0">Browse</span>
       </button>
 
-      <div className="hidden flex-wrap items-center gap-3 px-5 py-6 md:flex md:px-10">
+      <div className="hidden flex-wrap items-center gap-3 px-5 py-6 md:flex md:px-10 2xl:px-16">
         {worldChips.length > 0 ? (
           <ul className="flex flex-wrap gap-2">
             {worldChips.map((item) => (
@@ -243,7 +243,7 @@ export function SaleFilters({
       </div>
 
       {categoryChips.length > 0 ? (
-        <ul className="hidden flex-wrap gap-2 px-5 pb-6 md:flex md:px-10">
+        <ul className="hidden flex-wrap gap-2 px-5 pb-6 md:flex md:px-10 2xl:px-16">
           {categoryChips.map((item) => (
             <li key={item.key}>
               <Chip href={item.href} on={item.on} onPick={() => pick(item.next)}>

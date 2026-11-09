@@ -6,6 +6,7 @@ import { useState } from "react";
 import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
 import { formatMoney } from "@/lib/format";
+import { sizeLine } from "@/lib/kit";
 import { CURRENCY } from "@/lib/site";
 import { BuyTrust, EmptyBag } from "@/components/BuyTrust";
 import { PaymentMarks } from "@/components/PaymentMarks";
@@ -81,7 +82,7 @@ export function CartView() {
               <p className="eyebrow">{line.brand}</p>
               <p className="mt-1">{line.name}</p>
               <p className="mt-1 text-sm text-dust">
-                {[line.color, line.size].filter(Boolean).join(" · ")}
+                {[line.color, sizeLine(line.size)].filter(Boolean).join(" · ")}
               </p>
               {isBagVariantId(line.variantId) ? null : (
                 <p className="mt-2 text-sm text-dust">

@@ -55,7 +55,7 @@ export function ShopLooks({
               <span className={`mb-5 block h-1.5 w-16 ${SPLASH_FIELD[look.splash]}`} />
               <p className="eyebrow">{look.count} pieces</p>
               <p className="display mt-2 text-2xl md:text-3xl">{look.title}</p>
-              <p className="mt-3 max-w-xs text-sm leading-6">{look.line}</p>
+              <p className="deck mt-3 max-w-xs">{look.line}</p>
               <span className="cta-ghost mt-6 self-start">Shop this look</span>
             </div>
           </Link>

@@ -50,7 +50,7 @@ export function LookBand({
             ) : (
               <h2 className="display mt-4 max-w-xl text-4xl md:text-6xl">{title}</h2>
             )}
-            <p className="mt-4 max-w-sm text-sm leading-6">{dek}</p>
+            <p className="deck mt-4 max-w-sm">{dek}</p>
           </div>
           <ol className={`mt-8 grid gap-2 ${thumbs.length > 3 ? "grid-cols-4" : "grid-cols-3"}`}>
             {thumbs.map((piece, index) => {

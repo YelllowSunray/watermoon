@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
-import { buyableSizes, defaultSize, pickVariant } from "@/lib/kit";
+import { buyableSizes, defaultSize, needsSizeChoice, pickVariant, sizeLabel } from "@/lib/kit";
 import type { Department, Gender, Product, ProductCard } from "@/lib/products";
 import { CURRENCY } from "@/lib/site";
 
@@ -35,7 +35,7 @@ export function QuickBuy({
   const pref = sizeFor(product.gender, product.department, product.subcategory);
   const [size, setSize] = useState(() => defaultSize(product, color, pref));
   const [ask, setAsk] = useState(false);
-  const needsSize = sizes.length > 1 || Boolean(sizes[0] && sizes[0] !== "One Size");
+  const needsSize = needsSizeChoice(sizes);
   const marked = inBag && !(ask && needsSize);
   const variant = pickVariant(product, needsSize ? size : sizes[0] || size, color);
 
@@ -100,7 +100,7 @@ export function QuickBuy({
                     if (option) bag(option);
                   }}
                 >
-                  {entry}
+                  {sizeLabel(entry).primary}
                 </button>
               </li>
             );

@@ -65,7 +65,7 @@ export function ShopRooms({
         <span className="eyebrow shrink-0">Browse</span>
       </button>
 
-      <div className="hidden space-y-5 px-5 py-6 md:block md:px-10">
+      <div className="hidden space-y-5 px-5 py-6 md:block md:px-10 2xl:px-16">
         {departments.map((department) => (
           <div key={department.slug}>
             <p className="eyebrow mb-3">{department.name}</p>

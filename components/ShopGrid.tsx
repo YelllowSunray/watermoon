@@ -46,7 +46,7 @@ export function ShopGrid({
   }, [catalog, more, visible]);
 
   if (listed.length === 0) {
-    return <p className="px-5 text-sm text-dust md:px-10">Nothing available in this room.</p>;
+    return <p className="px-5 text-sm text-dust md:px-10 2xl:px-16">Nothing available in this room.</p>;
   }
 
   return (

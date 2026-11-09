@@ -34,9 +34,34 @@ export function buyableSizes(product: Sized, color?: string) {
   ];
 }
 
+export function sizeLabel(size: string) {
+  const compact = size.replace(/\s+/g, " ").trim();
+  const euUs = compact.match(/^EU\s*(\d+(?:\.\d+)?)\s*\/\s*US\s*(\d+(?:\.\d+)?)$/i);
+  if (euUs) return { primary: euUs[1], secondary: `US ${euUs[2]}` };
+  return { primary: compact };
+}
+
+export function sizeLine(size?: string) {
+  if (!size || size.toLowerCase() === "one size") return "";
+  const label = sizeLabel(size);
+  return [label.primary, label.secondary].filter(Boolean).join(" · ");
+}
+
+export function sizeMatches(size: string, pref?: string) {
+  if (!pref) return false;
+  if (size === pref) return true;
+  if (sizeLabel(size).primary === sizeLabel(pref).primary) return true;
+  return size.replace(/\s+/g, "").toLowerCase() === pref.replace(/\s+/g, "").toLowerCase();
+}
+
+export function needsSizeChoice(sizes: string[]) {
+  return sizes.some((size) => size && size.toLowerCase() !== "one size");
+}
+
 export function defaultSize(product: Sized, color?: string, preferred?: string) {
   const sizes = buyableSizes(product, color);
-  if (preferred && sizes.includes(preferred)) return preferred;
+  const match = sizes.find((size) => sizeMatches(size, preferred));
+  if (match) return match;
   return sizes.length === 1 ? sizes[0] : "";
 }
 

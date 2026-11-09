@@ -83,7 +83,7 @@ function WorldStreet({
               </div>
               <div className="flex flex-1 flex-col justify-end px-4 pb-5">
                 <p className="display text-2xl md:text-3xl">{story.title}</p>
-                <p className="mt-1 line-clamp-2 max-w-xs text-sm">{story.line}</p>
+                <p className="deck mt-1 line-clamp-2 max-w-xs">{story.line}</p>
               </div>
             </Link>
           </li>

@@ -80,7 +80,7 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
 
   return (
     <>
-      {menuOpen ? <div className="h-[67px] md:hidden" aria-hidden /> : null}
+      {menuOpen ? <div className="h-[67px] xl:hidden" aria-hidden /> : null}
       <header
       ref={header}
       className={`${menuOpen ? "fixed inset-x-0 top-0" : "sticky top-0"} z-50 bg-paper text-ink`}
@@ -88,11 +88,11 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
       onMouseLeave={hideSoon}
     >
       <div className="h-[3px] bg-ink" />
-      <div className="flex h-16 items-center justify-between border-b border-line px-4 md:h-[4.25rem] md:px-8">
-        <div className="flex min-w-0 items-center gap-0.5 md:gap-2">
+      <div className="flex h-16 items-center justify-between border-b border-line px-4 xl:h-[4.25rem] xl:px-10 2xl:px-16">
+        <div className="flex shrink-0 items-center gap-0.5 xl:gap-2">
           <button
             type="button"
-            className="relative flex h-11 w-11 shrink-0 items-center justify-center md:hidden"
+            className="relative flex h-11 w-11 shrink-0 items-center justify-center xl:hidden"
             aria-label={menuOpen ? "Close menu" : "Menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -121,7 +121,7 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
           <NavHome onPick={() => setOpen(null)} />
         </div>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-6 xl:flex 2xl:gap-9">
           <Link
             href="/women"
             className="nav-link"
@@ -188,10 +188,10 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
           </Link>
         </nav>
 
-        <div className="flex items-center gap-0.5 md:gap-4">
+        <div className="flex shrink-0 items-center gap-0.5 xl:gap-4 2xl:gap-6">
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center md:hidden"
+            className="flex h-11 w-11 items-center justify-center xl:hidden"
             aria-label="Search"
             onClick={() => {
               setOpen(null);
@@ -206,7 +206,7 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
           </button>
           <button
             type="button"
-            className="nav-link hidden px-1 md:inline"
+            className="nav-link hidden px-1 xl:inline"
             onClick={() => {
               setOpen(null);
               setSearchOpen(true);
@@ -214,18 +214,18 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
           >
             Search
           </button>
-          <Link href="/sizes" className="nav-link hidden px-1 md:inline">
+          <Link href="/sizes" className="nav-link hidden px-1 xl:inline">
             Sizes
           </Link>
-          <Link href="/wishlist" className="nav-link hidden px-1 md:inline">
+          <Link href="/wishlist" className="nav-link hidden px-1 xl:inline">
             Wishlist
           </Link>
-          <Link href="/account" className="nav-link hidden px-1 md:inline">
+          <Link href="/account" className="nav-link hidden px-1 xl:inline">
             Account
           </Link>
           <button
             type="button"
-            className="nav-link flex h-11 items-center px-2 md:h-auto md:px-1"
+            className="nav-link flex h-11 items-center px-2 xl:h-auto xl:px-1"
             onClick={() => {
               setOpen(null);
               setMenuOpen(false);
@@ -238,7 +238,7 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
       </div>
 
       {open ? (
-        <div className="absolute inset-x-0 top-full z-50 hidden md:block">
+        <div className="absolute inset-x-0 top-full z-50 hidden xl:block">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-screen bg-ink/45" aria-hidden />
           <div
             className={`mega relative w-full overflow-hidden ${
@@ -268,7 +268,7 @@ export function Header({ nav, brands = [] }: { nav: GenderNav[]; brands?: Brand[
       ) : null}
 
       {menuOpen ? (
-        <div className="menu-sheet fixed inset-x-0 top-[67px] bottom-0 z-40 overflow-y-auto overscroll-contain bg-paper md:hidden">
+        <div className="menu-sheet fixed inset-x-0 top-[67px] bottom-0 z-40 overflow-y-auto overscroll-contain bg-paper xl:hidden">
           <nav className="flex flex-col pb-[max(2.5rem,env(safe-area-inset-bottom))]">
             <MobileFold
               label="Women"
@@ -378,7 +378,7 @@ function GenderPanel({
         <div>
           <p className="eyebrow">Shop the look</p>
           <p className="display mt-2 text-4xl">{featured?.title ?? "The outfit. Then the pieces."}</p>
-          <p className="mt-3 max-w-xs text-sm leading-6">{featured?.line ?? "Not the dump."}</p>
+          <p className="deck mt-3 max-w-xs">{featured?.line ?? "Not the dump."}</p>
         </div>
         <div className="mt-8">
           <ul className="space-y-1.5">

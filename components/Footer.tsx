@@ -5,7 +5,7 @@ import { COMPANY, SHIPS_LINE, SITE_NAME, SOCIAL } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-line px-5 py-14 md:px-10">
+    <footer className="mt-auto border-t border-line px-5 py-14 md:px-10 2xl:px-16">
       <div className="grid gap-12 md:grid-cols-4">
         <div>
           <p className="display text-3xl">{SITE_NAME}</p>

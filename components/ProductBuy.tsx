@@ -8,6 +8,7 @@ import { Heart } from "@/components/Heart";
 import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
 import { formatMoney } from "@/lib/format";
+import { defaultSize, needsSizeChoice, sizeLabel, sizeMatches } from "@/lib/kit";
 import { CURRENCY } from "@/lib/site";
 import type { Product } from "@/lib/products";
 
@@ -24,18 +25,22 @@ export function ProductBuy({ product }: { product: Product }) {
       .map((variant) => variant.size);
     return [...new Set(sizes)];
   }, [product.variants, color]);
-  const buyableSizes = sizesForColor.filter((size) =>
-    product.variants.some(
-      (variant) =>
-        variant.available &&
-        variant.size === size &&
-        (!color || variant.color === color),
-    ),
+  const inStock = useMemo(
+    () =>
+      sizesForColor.filter((size) =>
+        product.variants.some(
+          (variant) =>
+            variant.available &&
+            variant.size === size &&
+            (!color || variant.color === color),
+        ),
+      ),
+    [product.variants, sizesForColor, color],
   );
   const pref = sizeFor(product.gender, product.department, product.subcategory);
-  const [size, setSize] = useState(() =>
-    pref && buyableSizes.includes(pref) ? pref : buyableSizes.length === 1 ? buyableSizes[0] : "",
-  );
+  const needsSize = needsSizeChoice(inStock);
+  const [size, setSize] = useState(() => defaultSize(product, color, pref));
+  const [asked, setAsked] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -44,14 +49,17 @@ export function ProductBuy({ product }: { product: Product }) {
 
   useEffect(() => {
     setSize((current) => {
-      if (current && buyableSizes.includes(current)) return current;
-      if (pref && buyableSizes.includes(pref)) return pref;
-      return buyableSizes.length === 1 ? buyableSizes[0] : "";
+      if (current && inStock.some((entry) => sizeMatches(entry, current))) {
+        return inStock.find((entry) => sizeMatches(entry, current)) ?? current;
+      }
+      return defaultSize(product, color, pref);
     });
-  }, [pref, buyableSizes]);
+    setAsked(false);
+  }, [pref, inStock, product, color]);
 
   function keep(next: string) {
     setSize(next);
+    setAsked(false);
     rememberSize(product.gender, product.department, next, product.subcategory);
   }
 
@@ -59,21 +67,25 @@ export function ProductBuy({ product }: { product: Product }) {
     (entry) =>
       entry.available &&
       (!color || entry.color === color) &&
-      (!size || entry.size === size),
+      (needsSize ? entry.size === size && Boolean(size) : true),
   );
 
   const soldOut = buyable.length === 0;
   const world = product.gender === "women" ? "Women" : "Men";
   const room = product.subcategory || product.department;
   const price = variant?.price ?? product.price;
+  const picked = size ? sizeLabel(size) : undefined;
   const cta = soldOut
     ? "This piece is not available to buy."
-    : variant
-      ? `Add to bag · ${formatMoney(price)}`
-      : "Choose a size";
+    : needsSize && !size
+      ? "Choose a size"
+      : variant
+        ? `Add to bag · ${formatMoney(price)}`
+        : "Choose a size";
 
   function bag() {
-    if (!variant) {
+    if (!variant || (needsSize && !size)) {
+      setAsked(true);
       document.getElementById("buy-size")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -99,15 +111,16 @@ export function ProductBuy({ product }: { product: Product }) {
 
   return (
     <div className="pb-24 md:pb-0">
-      <p className="eyebrow">
+      <p className="eyebrow md:hidden">
         <Link href={`/${product.gender}`}>{world}</Link>
         <span className="mx-2 opacity-40">·</span>
         {room}
       </p>
-      <p className="mt-5 text-sm tracking-[0.14em] uppercase">{product.brand}</p>
-      <div className="mt-3 flex items-start justify-between gap-4">
-        <h1 className="display break-words text-4xl md:text-6xl">{product.name}</h1>
+      <p className="buy-brand mt-5 tracking-[0.14em] uppercase md:mt-0">{product.brand}</p>
+      <div className="mt-3 flex items-start justify-between gap-3 md:mt-2">
+        <h1 className="buy-title display break-words leading-[1.05]">{product.name}</h1>
         <Heart
+          className="buy-heart shrink-0"
           item={{
             handle: product.slug,
             name: product.name,
@@ -118,7 +131,7 @@ export function ProductBuy({ product }: { product: Product }) {
         />
       </div>
 
-      <p className="mt-6 text-xl">
+      <p className="buy-price">
         {product.compareAtPrice ? (
           <>
             <span className="mr-3 text-dust line-through">{formatMoney(product.compareAtPrice)}</span>
@@ -130,8 +143,8 @@ export function ProductBuy({ product }: { product: Product }) {
       </p>
 
       {colors.length > 1 ? (
-        <div className="mt-10">
-          <p className="eyebrow mb-4">Colour</p>
+        <div className="buy-block">
+          <p className="eyebrow mb-3 md:mb-2">Colour</p>
           <ul className="flex flex-wrap gap-2">
             {colors.map((entry) => (
               <li key={entry.name}>
@@ -155,39 +168,56 @@ export function ProductBuy({ product }: { product: Product }) {
           </ul>
         </div>
       ) : colors[0]?.name ? (
-        <p className="mt-10 text-sm">
+        <p className="buy-block text-sm">
           <span className="eyebrow mr-3">Colour</span>
           {colors[0].name}
         </p>
       ) : null}
 
-      {sizesForColor.length > 1 || (sizesForColor[0] && sizesForColor[0] !== "One Size") ? (
-        <div id="buy-size" className="mt-10">
-          <div className="mb-4 flex items-end justify-between gap-4">
-            <p className="eyebrow">Size</p>
+      {needsSize ? (
+        <div
+          id="buy-size"
+          className={`buy-block scroll-mt-28 scroll-mb-28 ${asked && !size ? "outline outline-2 outline-offset-8 outline-ink" : ""}`}
+        >
+          <div className="mb-3 flex items-end justify-between gap-4 md:mb-2">
+            <p className="eyebrow">
+              Size
+              {picked ? (
+                <>
+                  <span className="mx-2 opacity-40">·</span>
+                  {picked.primary}
+                  {picked.secondary ? ` · ${picked.secondary}` : ""}
+                </>
+              ) : null}
+            </p>
             <Link href="/sizes" className="eyebrow opacity-70">
               Yours
             </Link>
           </div>
-          <ul className="flex flex-wrap gap-2">
+          {!size ? (
+            <p className="mb-3 text-sm md:mb-2">{asked ? "Pick a size first." : "Select a size to add this piece."}</p>
+          ) : null}
+          <ul className="flex flex-wrap gap-1.5">
             {sizesForColor.map((entry) => {
-              const available = product.variants.some(
-                (item) =>
-                  item.available &&
-                  item.size === entry &&
-                  (!color || item.color === color),
-              );
+              const available = inStock.includes(entry);
+              const label = sizeLabel(entry);
               return (
                 <li key={entry}>
                   <button
                     type="button"
                     disabled={!available}
                     onClick={() => keep(entry)}
-                    className={`choice min-w-14 ${size === entry ? "choice-on" : ""} ${
+                    aria-pressed={size === entry}
+                    className={`choice choice-size ${size === entry ? "choice-on" : ""} ${
                       available ? "" : "opacity-30"
                     }`}
                   >
-                    {entry}
+                    <span>{label.primary}</span>
+                    {label.secondary ? (
+                      <span className="text-[10px] tracking-[0.08em] uppercase opacity-60">
+                        {label.secondary}
+                      </span>
+                    ) : null}
                   </button>
                 </li>
               );
@@ -196,19 +226,19 @@ export function ProductBuy({ product }: { product: Product }) {
         </div>
       ) : null}
 
-      <div className="mt-12">
+      <div className="buy-block">
         {soldOut ? (
           <p className="text-sm text-dust">{cta}</p>
         ) : (
           <button
             type="button"
-            className="cta w-full min-h-14"
+            className="cta buy-cta hidden w-full md:block"
             onClick={bag}
           >
             {cta}
           </button>
         )}
-        <BuyTrust className="mt-5" />
+        <BuyTrust className="buy-trust" />
       </div>
 
       {mounted && !soldOut && !bagOpen
@@ -223,11 +253,11 @@ export function ProductBuy({ product }: { product: Product }) {
         : null}
 
       {product.description ? (
-        <p className="mt-10 max-w-sm text-sm leading-7">{product.description}</p>
+        <p className="buy-copy">{product.description}</p>
       ) : null}
 
       {product.details.length > 0 ? (
-        <dl className="mt-10 space-y-3 border-t border-line pt-8 text-sm">
+        <dl className="buy-facts space-y-3 border-t border-line md:space-y-2">
           {product.details.map((line) => {
             const [key, ...rest] = line.split(": ");
             return (

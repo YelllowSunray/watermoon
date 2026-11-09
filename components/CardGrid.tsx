@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 const COLS = {
-  shop: "grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+  shop: "grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
   two: "grid-cols-1 md:grid-cols-2",
   three: "grid-cols-2 md:grid-cols-3",
   four: "grid-cols-2 md:grid-cols-4",

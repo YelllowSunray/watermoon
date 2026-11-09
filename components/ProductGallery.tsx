@@ -24,9 +24,9 @@ export function ProductGallery({
   }
 
   return (
-    <div className="flex min-w-0 flex-col overflow-x-hidden bg-white md:h-[calc(100dvh-7.5rem)]">
+    <div className="flex min-w-0 flex-col overflow-x-hidden bg-white lg:h-[calc(100dvh-7.5rem)]">
       <div
-        className="relative aspect-[4/5] min-h-0 min-w-0 flex-1 overflow-hidden bg-white md:aspect-auto"
+        className="relative aspect-[4/5] min-h-0 min-w-0 flex-1 overflow-hidden bg-white lg:aspect-auto"
         onTouchStart={(event) => {
           startX.current = event.touches[0]?.clientX ?? null;
         }}
@@ -43,7 +43,7 @@ export function ProductGallery({
             fill
             priority
             className="object-contain"
-            sizes="(min-width: 768px) 58vw, 100vw"
+            sizes="(min-width: 1920px) 50vw, (min-width: 1536px) 52vw, (min-width: 1024px) 56vw, 100vw"
             draggable={false}
           />
         ) : null}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/components/store";
 import type { Department, Gender } from "@/lib/products";
 import { SPLASH_FIELD, streetSplash } from "@/lib/looks-data";
-import { sizeKey, type SizeKey } from "@/lib/storage";
+import { SIZE_KEYS, sizeKey, type SizeKey } from "@/lib/storage";
 
 const ROOMS: Array<{
   gender: Gender;
@@ -99,17 +99,16 @@ function RoomField({
   );
 }
 
-export function SizePrefs() {
-  const [options, setOptions] = useState<Partial<Record<SizeKey, string[]>>>({});
+const EMPTY_OPTIONS = Object.fromEntries(SIZE_KEYS.map((key) => [key, []])) as Record<
+  SizeKey,
+  string[]
+>;
 
-  useEffect(() => {
-    fetch("/api/size-options")
-      .then((response) => response.json())
-      .then((data: { options?: Partial<Record<SizeKey, string[]>> }) => {
-        setOptions(data.options ?? {});
-      })
-      .catch(() => setOptions({}));
-  }, []);
+export function SizePrefs({
+  options = EMPTY_OPTIONS,
+}: {
+  options?: Partial<Record<SizeKey, string[]>>;
+}) {
 
   return (
     <ul className="grid md:grid-cols-2">

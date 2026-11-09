@@ -12,7 +12,7 @@ export function CardSkeleton() {
 
 export function GridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="card-grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    <div className="card-grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {Array.from({ length: count }).map((_, index) => (
         <CardSkeleton key={index} />
       ))}
@@ -75,7 +75,7 @@ export function ShopSkeleton() {
           ))}
         </div>
       </div>
-      <div className="card-grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <div className="card-grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {Array.from({ length: 8 }).map((_, index) => (
           <CardSkeleton key={index} />
         ))}
