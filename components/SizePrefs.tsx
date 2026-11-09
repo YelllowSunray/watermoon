@@ -99,10 +99,8 @@ function RoomField({
   );
 }
 
-const EMPTY_OPTIONS = Object.fromEntries(SIZE_KEYS.map((key) => [key, []])) as Record<
-  SizeKey,
-  string[]
->;
+const EMPTY_OPTIONS = {} as Record<SizeKey, string[]>;
+for (const key of SIZE_KEYS) EMPTY_OPTIONS[key] = [];
 
 export function SizePrefs({
   options = EMPTY_OPTIONS,
