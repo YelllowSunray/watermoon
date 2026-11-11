@@ -9,7 +9,7 @@ import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
 import { formatMoney } from "@/lib/format";
 import { defaultSize, needsSizeChoice, sizeLabel, sizeMatches } from "@/lib/kit";
-import { CURRENCY } from "@/lib/site";
+import { pixelCommerce } from "@/lib/meta-pixel";
 import type { Product } from "@/lib/products";
 
 export function ProductBuy({ product }: { product: Product }) {
@@ -101,12 +101,12 @@ export function ProductBuy({ product }: { product: Product }) {
       color: variant.color,
       size: variant.size,
     });
-    track("AddToCart", {
-      content_name: product.name,
-      content_ids: [product.slug],
-      value: variant.price,
-      currency: CURRENCY,
-    });
+    track(
+      "AddToCart",
+      pixelCommerce([{ id: variant.id, quantity: 1, price: variant.price }], {
+        content_name: product.name,
+      }),
+    );
   }
 
   return (

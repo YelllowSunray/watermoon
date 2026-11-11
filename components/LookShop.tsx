@@ -7,7 +7,7 @@ import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
 import { formatMoney } from "@/lib/format";
 import { defaultSize, kitIndex, kitTotal, pieceRole } from "@/lib/kit";
-import { CURRENCY } from "@/lib/site";
+import { pixelCommerce } from "@/lib/meta-pixel";
 import type { Product } from "@/lib/products";
 
 export function LookShop({ products }: { products: Product[] }) {
@@ -145,12 +145,17 @@ export function LookShop({ products }: { products: Product[] }) {
               );
             }
           }
-          track("AddToCart", {
-            content_name: "Look",
-            content_ids: products.map((product) => product.slug),
-            value: total,
-            currency: CURRENCY,
-          });
+          track(
+            "AddToCart",
+            pixelCommerce(
+              lines.map((line) => ({
+                id: line.variantId,
+                quantity: line.quantity,
+                price: line.price,
+              })),
+              { content_name: "Look" },
+            ),
+          );
         }}
       >
         {ready ? `Add the look · ${formatMoney(total)}` : "Choose sizes"}

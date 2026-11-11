@@ -7,7 +7,7 @@ import { useStore } from "@/components/store";
 import { track } from "@/components/pixel";
 import { formatMoney } from "@/lib/format";
 import { sizeLine } from "@/lib/kit";
-import { CURRENCY } from "@/lib/site";
+import { pixelCommerce } from "@/lib/meta-pixel";
 import { BuyTrust, EmptyBag } from "@/components/BuyTrust";
 import { PaymentMarks } from "@/components/PaymentMarks";
 import { isBagVariantId } from "@/lib/storage";
@@ -45,12 +45,17 @@ export function BagDrawer() {
         setError(json.error || "Could not start checkout.");
         return;
       }
-      track("InitiateCheckout", {
-        content_ids: bag.map((line) => line.handle),
-        value: total,
-        currency: CURRENCY,
-        num_items: bag.length,
-      });
+      track(
+        "InitiateCheckout",
+        pixelCommerce(
+          bag.map((line) => ({
+            id: line.variantId,
+            quantity: line.quantity,
+            price: line.price,
+          })),
+          { num_items: bag.reduce((sum, line) => sum + line.quantity, 0) },
+        ),
+      );
       window.location.href = json.checkoutUrl;
     } catch {
       setError("Could not start checkout.");

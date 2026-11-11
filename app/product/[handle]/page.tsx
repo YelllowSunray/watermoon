@@ -62,7 +62,7 @@ export default async function ProductPage({
 
   return (
     <article>
-      <RememberView handle={product.slug} name={product.name} price={product.price} />
+      <RememberView product={product} />
       <JsonLd data={productJsonLd(product)} />
 
       <div

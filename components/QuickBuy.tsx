@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { track } from "@/components/pixel";
 import { useStore } from "@/components/store";
 import { buyableSizes, defaultSize, needsSizeChoice, pickVariant, sizeLabel } from "@/lib/kit";
+import { pixelCommerce } from "@/lib/meta-pixel";
 import type { Department, Gender, Product, ProductCard } from "@/lib/products";
-import { CURRENCY } from "@/lib/site";
 
 type Buyable = Pick<
   Product,
@@ -66,12 +66,12 @@ export function QuickBuy({
       size: next.size,
     });
     keep(product.gender, product.department, next.size);
-    track("AddToCart", {
-      content_name: product.name,
-      content_ids: [product.slug],
-      value: next.price,
-      currency: CURRENCY,
-    });
+    track(
+      "AddToCart",
+      pixelCommerce([{ id: next.id, quantity: 1, price: next.price }], {
+        content_name: product.name,
+      }),
+    );
     setAsk(false);
   }
 
